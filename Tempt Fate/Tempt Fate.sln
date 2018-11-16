@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tempt Fate", "Tempt Fate\Tempt Fate.csproj", "{1C532C8B-7E3B-4768-9A63-3F7EC7F7E17F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C532C8B-7E3B-4768-9A63-3F7EC7F7E17F}.Debug|x86.ActiveCfg = Debug|x86
+		{1C532C8B-7E3B-4768-9A63-3F7EC7F7E17F}.Debug|x86.Build.0 = Debug|x86
+		{1C532C8B-7E3B-4768-9A63-3F7EC7F7E17F}.Release|x86.ActiveCfg = Release|x86
+		{1C532C8B-7E3B-4768-9A63-3F7EC7F7E17F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2BC1CC9-1BE2-475B-9CB3-474A013D060D}
+	EndGlobalSection
+EndGlobal

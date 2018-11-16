@@ -1,0 +1,38 @@
+C:\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.csprojResolveAssemblyReference.cache
+C:\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.csproj.CoreCompileInputs.cache
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Tempt Fate.exe
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Tempt Fate.pdb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.csproj.CopyComplete
+C:\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.exe
+C:\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.pdb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Screenshot (2).xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Screenshot (3).xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\ss.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\ss (2).xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\TitleSreen.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\TestMystic.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Font.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\cornflowerblue.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SampleAudio_0.7mb.wma
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SampleAudio_0.7mb.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Beat.wma
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Beat.xnb
+C:\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\FirstLevel.xnb
