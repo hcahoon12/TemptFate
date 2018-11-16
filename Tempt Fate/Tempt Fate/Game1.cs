@@ -128,6 +128,15 @@ namespace Tempt_Fate
 					Lines.Draw(spriteBatch);
 				}
 				Screen.Draw(spriteBatch);
+				for (int i = 0; i < playerone.health; i++)
+				{
+					spriteBatch.Draw(playerone.healthTexture, new Rectangle(-30, -40, 25000 / playerone.health, 100), Color.White);
+				}
+				//need to make it half the screen width instead of 250000
+				/*for (int i = 0; i < playertwo.health; i++)
+				{
+					spriteBatch.Draw(playertwo.healthTexture2, new Rectangle(480, -40, 25000 / playertwo.health, 100), Color.White);
+				}*/
 				playerone.Draw(spriteBatch);
 				//playertwo.Draw(spriteBatch);
 			}

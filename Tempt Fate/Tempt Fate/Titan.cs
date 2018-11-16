@@ -13,7 +13,7 @@ namespace Tempt_Fate
 {
 	public class Titan : Character
 	{
-		public Titan(int x, int y):base(new Rectangle(x, y, 100, 100), 6.6)
+		public Titan(int x, int y):base(new Rectangle(x, y, 100, 100), 6.6, 50)
 		{
 
 		}

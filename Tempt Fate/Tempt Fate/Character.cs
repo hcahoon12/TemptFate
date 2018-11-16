@@ -13,11 +13,14 @@ namespace Tempt_Fate
 {
 	public class Character
 	{
+		public int health;
 		private Animation animation;
 		private Texture2D RightWalk;
 		private Texture2D LeftWalk;
 		private Texture2D JumpAnimation;
 		private Rectangle hitbox;
+		public Texture2D healthTexture;
+		public Texture2D healthTexture2;
 		private bool Jumped;
 		private Vector2 velocity;
 		private double speed;
@@ -26,9 +29,10 @@ namespace Tempt_Fate
 		public GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
 		public KeyboardState KeyboardState = Keyboard.GetState();
 		public GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
-		public Character (Rectangle hitbox , double speed)
+		public Character (Rectangle hitbox , double speed , int health)
 		{
 			this.speed = speed;
+			this.health = health;
 			this.hitbox = hitbox;
 			Jumped = true;
 		}
@@ -40,7 +44,8 @@ namespace Tempt_Fate
 			JumpAnimation = Content.Load<Texture2D>(jumpAnimation);
 			LeftWalk = Content.Load<Texture2D>(leftTexture);
 			animation = new Animation(RightWalk, 4, 1, hitbox);
-			
+			healthTexture = Content.Load<Texture2D>("Healthbar");
+			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 		}
 		public void Update(GameTime gameTime, List<Line> Lines)
 		{
@@ -129,6 +134,7 @@ namespace Tempt_Fate
 		}
 		public void Draw(SpriteBatch spritebatch)
 		{
+			
 			animation.Draw(spritebatch);
 			
 		}

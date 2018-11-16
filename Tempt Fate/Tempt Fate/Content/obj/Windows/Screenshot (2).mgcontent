@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Tempt Fate/Tempt Fate/Content/Screenshot (2).png</SourceFile>
-  <SourceTime>2018-09-13T19:49:33.8441974-04:00</SourceTime>
-  <DestFile>C:/Tempt Fate/Tempt Fate/Content/bin/Windows/Screenshot (2).xnb</DestFile>
-  <DestTime>2018-09-13T19:52:34.2090332-04:00</DestTime>
+  <SourceFile>C:/TemptFate/TemptFate/Tempt Fate/Tempt Fate/Content/Screenshot (2).png</SourceFile>
+  <SourceTime>2018-11-16T09:06:07.6836532-05:00</SourceTime>
+  <DestFile>C:/TemptFate/TemptFate/Tempt Fate/Tempt Fate/Content/bin/Windows/Screenshot (2).xnb</DestFile>
+  <DestTime>2018-11-16T09:23:19.602328-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

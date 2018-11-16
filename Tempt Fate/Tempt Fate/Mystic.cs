@@ -13,7 +13,7 @@ namespace Tempt_Fate
 {
 	public class Mystic : Character
 	{
-		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6)
+		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6, 50)
 		{
 
 		}
