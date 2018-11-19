@@ -40,11 +40,51 @@ namespace Tempt_Fate
 		{
 			Buttons? returnVal = null;
 			newA = gamepadstate.IsButtonDown(Buttons.A);
+			newB = gamepadstate.IsButtonDown(Buttons.B);
+			newX = gamepadstate.IsButtonDown(Buttons.X);
+			newY = gamepadstate.IsButtonDown(Buttons.Y);
+			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft);
+			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight);
+			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown);
 			if (newA == true && oldA == false)
 			{
-				returnVal= Buttons.A;
+				returnVal = Buttons.A;
+			}
+			
+			else if (newB == true && oldB == false)
+			{
+				returnVal = Buttons.B;
+			}
+			
+			else if (newX == true && oldX == false)
+			{
+				returnVal = Buttons.X;
+			}
+			
+			else if (newY == true && oldY == false)
+			{
+				returnVal = Buttons.Y;
+			}
+			else if (newLeft == true && oldLeft == false)
+			{
+				returnVal = Buttons.DPadLeft;
+			}
+			else if (newRight == true && oldRight == false)
+			{
+				returnVal = Buttons.DPadRight;
+			}
+			
+			else if (newDown == true && oldDown == false)
+			{
+				returnVal = Buttons.DPadDown;
 			}
 			oldA = newA;
+			oldB = newB;
+			oldX = newX;
+			oldRight = newRight;
+			oldLeft = newLeft;
+			oldY = newY;
+			oldDown = newDown;
 			return returnVal; 
 		}
 	}

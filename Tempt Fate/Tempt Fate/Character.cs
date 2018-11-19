@@ -8,56 +8,73 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using System.Timers;
 
 namespace Tempt_Fate
 {
 	public class Character
 	{
+		private static Timer combosReset;
+		protected Texture2D Shottexture;
 		public int health;
 		private Animation animation;
 		private Texture2D RightWalk;
+		public List<Shot> shootlist;
+		public int Direction;
 		private Texture2D LeftWalk;
 		private Texture2D JumpAnimation;
-		private Rectangle hitbox;
+		protected Rectangle hitbox;
+		private float shootdelay;
 		public Texture2D healthTexture;
 		public Texture2D healthTexture2;
 		private bool Jumped;
 		private Vector2 velocity;
 		private double speed;
+		private Gamepadbuttons gamePadButtons;
 		private bool SomeKeyPressed;
-		public List<Buttons> Combos;
+		protected List<Buttons> Combos;
 		public Character (Rectangle hitbox , double speed , int health)
 		{
+			combosReset = new System.Timers.Timer();
+			combosReset.Interval = 1000;
+			combosReset.Elapsed += ComboReset;
 			this.speed = speed;
 			this.health = health;
 			this.hitbox = hitbox;
 			Combos = new List<Buttons>();
 			Jumped = true;
+			gamePadButtons = new Gamepadbuttons();
 		}
 		public virtual void LoadContent(ContentManager Content)
 		{ }
-			public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation)
+			public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture)
 		{
 			RightWalk = Content.Load<Texture2D>(rightTexture);
 			JumpAnimation = Content.Load<Texture2D>(jumpAnimation);
 			LeftWalk = Content.Load<Texture2D>(leftTexture);
 			animation = new Animation(RightWalk, 4, 1, hitbox);
+			Shottexture = Content.Load<Texture2D>(shottexture);
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 		}
 		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
 		{
 			velocity.Y += .8f; //default gravity
-		
-			for (int i = Combos.Count-1; i >=0; i--)
+			Buttons? button=gamePadButtons.Update(gamepadstate);
+			if (button != null)
 			{
-				
-				if (Combos.Count >= 5)
+				//reset timer
+				combosReset.Stop();
+				combosReset.Start();
+				//puts combos to the front of the list
+				Combos.Insert(0,(Buttons)button);
+				//start countdown to clear combos
+
+				if(Combos.Count >= 5)
 				{
-					Combos.RemoveAt(0);
+					Combos.RemoveAt(4);
 				}
 			}
-			
 			for (int l = 0; l < Lines.Count; l++)
 			{
 				if (hitbox.Intersects(Lines[l].rectangle))
@@ -113,35 +130,46 @@ namespace Tempt_Fate
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
 		}
-		public void ButtonsPressed(GamePadState gamepadstate)
+		private void ComboReset(Object source, System.Timers.ElapsedEventArgs e)
 		{
-			if (gamepadstate.IsButtonDown(Buttons.A))
+			Combos.Clear();
+			combosReset.Stop();
+		}
+		protected void Shoot()
+		{
+			if (shootdelay >= 0)
 			{
-				Combos.Add(Buttons.A);
+				shootdelay--;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.B))
+			if (shootdelay <= 0)
 			{
-				Combos.Add(Buttons.B);
+				Shot newShot = new Shot(Shottexture, hitbox.X, hitbox.Y, Direction);
+				//add to list
+				if (shootlist.Count() < 1)
+				{
+					shootlist.Add(newShot);
+				}
 			}
-			if (gamepadstate.IsButtonDown(Buttons.X))
+
+			// reset delay
+			if (shootdelay == 0)
 			{
-				Combos.Add(Buttons.X);
+				shootdelay = 3;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.Y))
+		}
+		// update bullet function
+		public void UpdateShot(List<Line> Lines)
+		{
+
+			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 			{
-				Combos.Add(Buttons.Y);
-			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadLeft))
-			{
-				Combos.Add(Buttons.DPadLeft);
-			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadRight))
-			{
-				Combos.Add(Buttons.DPadRight);
-			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadDown))
-			{
-				Combos.Add(Buttons.DPadDown);
+
+				shootlist[i].Update();
+				if (!shootlist[i].isvisible)
+				{
+					shootlist.RemoveAt(i);
+					i--;
+				}
 			}
 		}
 		public void WalkLeft(GameTime gameTime)
@@ -161,7 +189,10 @@ namespace Tempt_Fate
 		}
 		public void Draw(SpriteBatch spritebatch)
 		{
-			
+			foreach (Shot s in shootlist)
+			{
+				s.Draw(spritebatch);
+			}
 			animation.Draw(spritebatch);
 			
 		}

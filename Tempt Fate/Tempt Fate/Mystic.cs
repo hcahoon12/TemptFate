@@ -19,7 +19,7 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "ss", "TestMystic", "ss (2)");
+			base.LoadContent(Content, "ss", "TestMystic", "ss (2)", "Knife");
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
 		{
