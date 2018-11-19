@@ -21,14 +21,9 @@ namespace Tempt_Fate
 		{
 			base.LoadContent(Content, "TestMystic", "ss (2)", "TestMystic");
 		}
-		public void Update(GameTime gameTime, List<Line> Lines)
+		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
 		{
-			if (gst1.IsButtonDown(Buttons.Y))
-			{
-				Combos.Add(Buttons.Y);
-			}
-			
-				base.Update(gameTime, Lines);
+				base.Update(gameTime, Lines, gamepadstate);
 		}
 
 		public void Draw(SpriteBatch spriteBatch)

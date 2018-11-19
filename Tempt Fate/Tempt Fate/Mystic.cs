@@ -17,16 +17,15 @@ namespace Tempt_Fate
 		{
 
 		}
-
 		public override void LoadContent(ContentManager Content)
 		{
 			base.LoadContent(Content, "ss", "TestMystic", "ss (2)");
 		}
-		public void Update(GameTime gameTime, List<Line> Lines)
+		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
 		{
-		   base.Update(gameTime, Lines);
+		   base.Update(gameTime, Lines, gamepadstate);
 		}
-		public void Draw(SpriteBatch spriteBatch)
+		public new void Draw(SpriteBatch spriteBatch)
 		{
 			base.Draw(spriteBatch);
 		}

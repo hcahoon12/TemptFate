@@ -26,14 +26,12 @@ namespace Tempt_Fate
 		private double speed;
 		private bool SomeKeyPressed;
 		public List<Buttons> Combos;
-		public GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
-		public KeyboardState KeyboardState = Keyboard.GetState();
-		public GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
 		public Character (Rectangle hitbox , double speed , int health)
 		{
 			this.speed = speed;
 			this.health = health;
 			this.hitbox = hitbox;
+			Combos = new List<Buttons>();
 			Jumped = true;
 		}
 		public virtual void LoadContent(ContentManager Content)
@@ -47,20 +45,19 @@ namespace Tempt_Fate
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 		}
-		public void Update(GameTime gameTime, List<Line> Lines)
+		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
 		{
-			var gst1 = GamePad.GetState(PlayerIndex.One);
-	      	var KeyboardState = Keyboard.GetState();
-	    	var gst2 = GamePad.GetState(PlayerIndex.Two);
-		velocity.Y += .8f; //default gravity
-			/*for (int i = 0; i < Combos.Count; i++)
+			velocity.Y += .8f; //default gravity
+		
+			for (int i = Combos.Count-1; i >=0; i--)
 			{
-				if (Combos.Count > 5)
+				
+				if (Combos.Count >= 5)
 				{
-					Combos.RemoveAt(i);
-					i--;
+					Combos.RemoveAt(0);
 				}
-			}*/
+			}
+			
 			for (int l = 0; l < Lines.Count; l++)
 			{
 				if (hitbox.Intersects(Lines[l].rectangle))
@@ -75,8 +72,7 @@ namespace Tempt_Fate
 				Jumped = false;
 			}
 				SomeKeyPressed = false;
-
-			if (gst1.IsButtonDown(Buttons.DPadUp) && Jumped == false || gst1.IsButtonDown(Buttons.LeftThumbstickUp) && Jumped == false || KeyboardState.IsKeyDown(Keys.Up) && Jumped == false)
+			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false || gamepadstate.IsButtonDown(Buttons.LeftThumbstickUp) && Jumped == false)
 			{
 				animation.Update(gameTime, hitbox);
 				animation.SetTexture(JumpAnimation, 0);
@@ -85,7 +81,7 @@ namespace Tempt_Fate
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
-			 if (gst1.IsButtonDown(Buttons.DPadRight) || gst1.IsButtonDown(Buttons.LeftThumbstickRight) || KeyboardState.IsKeyDown(Keys.Right))
+			 if (gamepadstate.IsButtonDown(Buttons.DPadRight) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickRight) )
 			{
 				for (int i = 0; i < speed; i++)
 				{
@@ -96,7 +92,7 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
-			if (gst1.IsButtonDown(Buttons.DPadLeft) || gst1.IsButtonDown(Buttons.LeftThumbstickLeft) || KeyboardState.IsKeyDown(Keys.Left))
+			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickLeft))
 			{
 				for (int i = 0; i < speed; i++)
 				{
@@ -116,6 +112,37 @@ namespace Tempt_Fate
 			animation.Update(gameTime, hitbox);
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
+		}
+		public void ButtonsPressed(GamePadState gamepadstate)
+		{
+			if (gamepadstate.IsButtonDown(Buttons.A))
+			{
+				Combos.Add(Buttons.A);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.B))
+			{
+				Combos.Add(Buttons.B);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.X))
+			{
+				Combos.Add(Buttons.X);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.Y))
+			{
+				Combos.Add(Buttons.Y);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.DPadLeft))
+			{
+				Combos.Add(Buttons.DPadLeft);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.DPadRight))
+			{
+				Combos.Add(Buttons.DPadRight);
+			}
+			if (gamepadstate.IsButtonDown(Buttons.DPadDown))
+			{
+				Combos.Add(Buttons.DPadDown);
+			}
 		}
 		public void WalkLeft(GameTime gameTime)
 		{

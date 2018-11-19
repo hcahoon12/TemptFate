@@ -57,8 +57,8 @@ namespace Tempt_Fate
 
 		protected override void Update(GameTime gameTime)
 		{
-			var gst1 = GamePad.GetState(PlayerIndex.One);
-			var gst2 = GamePad.GetState(PlayerIndex.Two);
+			GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
+			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
 			if (Screen.titleScreen.Bool == true)
 			{
 				Screen.Update(gameTime);
@@ -90,8 +90,8 @@ namespace Tempt_Fate
 			}
 			else
 			{
-				playerone.Update(gameTime, Lines);
-			//	playertwo.Update(gameTime, Lines);
+				playerone.Update(gameTime, Lines,gst1);
+			//	playertwo.Update(gameTime, Lines, gst2);
 			}
 			base.Update(gameTime);
 		}
