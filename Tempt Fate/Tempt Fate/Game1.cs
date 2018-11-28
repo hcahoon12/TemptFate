@@ -17,8 +17,8 @@ namespace Tempt_Fate
 		SpriteBatch spriteBatch;
 		SpriteFont Fontone;
 		Screenmanager Screen;
-		Character playerone;
-		Character playertwo;
+		Character titan;
+		Character mystic;
 		List<Line> Lines = new List<Line>();
 		Texture2D mysticTexture;
 		Texture2D titanTexture;
@@ -57,41 +57,25 @@ namespace Tempt_Fate
 
 		protected override void Update(GameTime gameTime)
 		{
+			addLines();
 			GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
 			if (Screen.titleScreen.Bool == true)
 			{
 				Screen.Update(gameTime);
-			}
-			else if (Screen.SelectScreen.Bool == true)
-			{
-				addLines();
-				Screen.Update(gameTime);
-				if (gst1.IsButtonDown(Buttons.A))
-				{
-					playerone = new Titan(0, 500);
-					playerone.LoadContent(Content);
-				}
-				else if (gst1.IsButtonDown(Buttons.X))
-				{
-					playerone = new Mystic(0 , 500);
-					playerone.LoadContent(Content);
-				}
-				if (gst2.IsButtonDown(Buttons.A))
-				{
-					playertwo = new Titan(400, 500);
-					playertwo.LoadContent(Content);
-				}
-				else if (gst2.IsButtonDown(Buttons.X))
-				{
-					playertwo = new Mystic(400,500);
-					playertwo.LoadContent(Content);
-				}
+				titan = new Titan(0, 500);
+				titan.LoadContent(Content);
+				//mystic.LoadContent(Content);
+				//mystic = new Mystic(400, 500);
 			}
 			else
 			{
-				playerone.Update(gameTime, Lines,gst1);
-			//	playertwo.Update(gameTime, Lines, gst2);
+				titan.Update(gameTime, Lines, gst1);
+				//mystic.Update(gameTime, Lines, gst2);
+			}
+			if (titan.firstCombo == true && titan.hitbox.Intersects(mystic.hitbox))
+			{
+				mystic.health -= titan.damage;
 			}
 			base.Update(gameTime);
 		}
@@ -104,23 +88,7 @@ namespace Tempt_Fate
 			{
 				Screen.titleScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 			}
-			else if (Screen.SelectScreen.Bool == true)
-			{
-				Screen.SelectScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
-				spriteBatch.Draw(mysticTexture, new Rectangle(125, 0, 100, 100), Color.White);
-				spriteBatch.Draw(titanTexture, new Rectangle(350, 0, 100, 100), Color.White);
-				spriteBatch.Draw(firstlevelTexture, new Rectangle(125, 500, 100, 100), Color.White);
-				spriteBatch.DrawString(Fontone, "First, both players choose a fighter, then choose a level", new Vector2(135 , 250), Color.Black);
-				spriteBatch.DrawString(Fontone, "A", new Vector2(125, 125), Color.Green);
-				spriteBatch.DrawString(Fontone, "B", new Vector2(575, 125), Color.Red);
-				spriteBatch.DrawString(Fontone, "X", new Vector2(350, 125), Color.Blue);
-				spriteBatch.DrawString(Fontone, "Y", new Vector2(800, 125), Color.Yellow);
-				spriteBatch.DrawString(Fontone, "LT", new Vector2(125, 425), Color.Black);
-				spriteBatch.DrawString(Fontone, "LB", new Vector2(350, 425), Color.Black);
-				spriteBatch.DrawString(Fontone, "RB", new Vector2(575, 425), Color.Black);
-				spriteBatch.DrawString(Fontone, "RT", new Vector2(800, 425), Color.Black);
-			}
-		
+			
 			else //play
 			{
 				foreach (Line Lines in Lines)
@@ -128,17 +96,17 @@ namespace Tempt_Fate
 					Lines.Draw(spriteBatch);
 				}
 				Screen.Draw(spriteBatch);
-				for (int i = 0; i < playerone.health; i++)
+				for (int i = 0; i < titan.health; i++)
 				{
-					spriteBatch.Draw(playerone.healthTexture, new Rectangle(-30, -40, 25000 / playerone.health, 100), Color.White);
+					spriteBatch.Draw(titan.healthTexture, new Rectangle(-30, -40, 25000 / titan.health, 100), Color.White);
 				}
 				//need to make it half the screen width instead of 250000
-				/*for (int i = 0; i < playertwo.health; i++)
+				/*for (int i = 0; i < mystic.health; i++)
 				{
-					spriteBatch.Draw(playertwo.healthTexture2, new Rectangle(480, -40, 25000 / playertwo.health, 100), Color.White);
+					spriteBatch.Draw(mystic.healthTexture2, new Rectangle(480, -40, 25000 / mystic.health, 100), Color.White);
 				}*/
-				playerone.Draw(spriteBatch);
-				//playertwo.Draw(spriteBatch);
+				titan.Draw(spriteBatch);
+				//mystic.Draw(spriteBatch);
 			}
 			spriteBatch.End();
 			base.Draw(gameTime);

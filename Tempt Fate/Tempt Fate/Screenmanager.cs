@@ -13,15 +13,11 @@ namespace Tempt_Fate
 	public class Screenmanager
 	{
 		public Levels FirstLevel;
-		public Levels SelectScreen;
 		public Levels titleScreen;
-		private bool playeroneselected = false;
-		private bool playertwoselected = false;
 		public Screenmanager()
 		{
 			titleScreen = new Levels();
 			FirstLevel = new Levels();
-			SelectScreen = new Levels();
 			titleScreen.Bool = true;
 			
 		}
@@ -30,31 +26,12 @@ namespace Tempt_Fate
 			titleScreen.Update();
 			FirstLevel.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			var gst2 = GamePad.GetState(PlayerIndex.Two);
 			var KeyboardState = Keyboard.GetState();
 			if (titleScreen.Bool == true)
 			{
 				if (gst1.IsButtonDown(Buttons.Start) || KeyboardState.IsKeyDown(Keys.Space))
 				{
 					titleScreen.Bool = false;
-					SelectScreen.Bool = true;
-					playeroneselected = false;
-					playertwoselected = false;
-				}
-			}
-			else if (SelectScreen.Bool == true)
-			{
-				if (gst1.IsButtonDown(Buttons.A) || gst1.IsButtonDown(Buttons.X))
-				{
-					playeroneselected = true;
-				}
-				/*if (gst2.IsButtonDown(Buttons.A) || gst2.IsButtonDown(Buttons.X))
-				{
-					playertwoselected = true;
-				}*/
-				if (gst1.IsButtonDown(Buttons.LeftTrigger) && playeroneselected == true /* && playertwoselected == true*/)
-				{
-					SelectScreen.Bool = false;
 					FirstLevel.Bool = true;
 				}
 			}
@@ -63,8 +40,6 @@ namespace Tempt_Fate
 		{
 			titleScreen.LoadContent(Content, "TitleSreen");
 			FirstLevel.LoadContent(Content, "FirstLevel");
-			SelectScreen.LoadContent(Content , "cornflowerblue");
-			
 		}
 		public void Draw(SpriteBatch spritebatch)
 		{

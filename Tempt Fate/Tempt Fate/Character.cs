@@ -14,17 +14,19 @@ namespace Tempt_Fate
 {
 	public class Character
 	{
+		public int damage;
+		public bool firstCombo;
 		private static Timer combosReset;
+		protected static Timer shotDelay;
 		protected Texture2D Shottexture;
 		public int health;
 		private Animation animation;
 		private Texture2D RightWalk;
-		public List<Shot> shootlist;
-		public int Direction;
+		protected List<Shot> shootlist;
+		protected int Direction;
 		private Texture2D LeftWalk;
 		private Texture2D JumpAnimation;
-		protected Rectangle hitbox;
-		private float shootdelay;
+		public Rectangle hitbox;
 		public Texture2D healthTexture;
 		public Texture2D healthTexture2;
 		private bool Jumped;
@@ -36,12 +38,16 @@ namespace Tempt_Fate
 		public Character (Rectangle hitbox , double speed , int health)
 		{
 			combosReset = new System.Timers.Timer();
-			combosReset.Interval = 1000;
+			combosReset.Interval = 500;
 			combosReset.Elapsed += ComboReset;
+			shotDelay = new System.Timers.Timer();
+			shotDelay.Interval = 600;
+			shotDelay.Elapsed += ShotDelay;
 			this.speed = speed;
 			this.health = health;
 			this.hitbox = hitbox;
 			Combos = new List<Buttons>();
+			shootlist = new List<Shot>();
 			Jumped = true;
 			gamePadButtons = new Gamepadbuttons();
 		}
@@ -69,7 +75,6 @@ namespace Tempt_Fate
 				//puts combos to the front of the list
 				Combos.Insert(0,(Buttons)button);
 				//start countdown to clear combos
-
 				if(Combos.Count >= 5)
 				{
 					Combos.RemoveAt(4);
@@ -100,6 +105,7 @@ namespace Tempt_Fate
 			}
 			 if (gamepadstate.IsButtonDown(Buttons.DPadRight) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickRight) )
 			{
+				Direction = 1;
 				for (int i = 0; i < speed; i++)
 				{
 					WalkRight(gameTime);
@@ -111,6 +117,7 @@ namespace Tempt_Fate
 			}
 			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickLeft))
 			{
+				Direction = -1;
 				for (int i = 0; i < speed; i++)
 				{
 					WalkLeft(gameTime);
@@ -135,37 +142,24 @@ namespace Tempt_Fate
 			Combos.Clear();
 			combosReset.Stop();
 		}
+		private void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
+		{
+			shotDelay.Stop();
+		}
 		protected void Shoot()
 		{
-			if (shootdelay >= 0)
+			Shot newShot = new Shot(Shottexture, hitbox.X, hitbox.Y, Direction);
+			if (shootlist.Count() < 1)
 			{
-				shootdelay--;
-			}
-			if (shootdelay <= 0)
-			{
-				Shot newShot = new Shot(Shottexture, hitbox.X, hitbox.Y, Direction);
-				//add to list
-				if (shootlist.Count() < 1)
-				{
-					shootlist.Add(newShot);
-				}
-			}
-
-			// reset delay
-			if (shootdelay == 0)
-			{
-				shootdelay = 3;
+				shootlist.Add(newShot);
 			}
 		}
-		// update bullet function
-		public void UpdateShot(List<Line> Lines)
+		protected void UpdateShot()
 		{
-
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 			{
-
 				shootlist[i].Update();
-				if (!shootlist[i].isvisible)
+				if (shootlist[i].isvisible == false)
 				{
 					shootlist.RemoveAt(i);
 					i--;

@@ -12,14 +12,14 @@ namespace Tempt_Fate
 {
 	public class Shot
 	{
-		Texture2D startexture;
+		private Texture2D tt;
 		public Rectangle hitbox;
-		public int speed;
+		private int speed;
 		public bool isvisible;
-		int xOffset;
-		int yOffset;
-		int distravled;
-		public Shot(Texture2D StarTexture, int X, int Y, int direction)
+		private int xOffset;
+		private int yOffset;
+		private int distravled;
+		public Shot(Texture2D ShotTexture, int X, int Y, int direction)
 		{
 			distravled = 0;
 			speed = 10 * direction;
@@ -37,15 +37,14 @@ namespace Tempt_Fate
 			}
 			hitbox = new Rectangle(X + xOffset, Y + yOffset, 20, 20);
 			isvisible = true;
-			startexture = StarTexture;
+			tt = ShotTexture;
 		}
 
 		public void Update()
 		{
 			hitbox.X += speed;
 			distravled += Math.Abs(speed);
-
-			if (distravled > 500)
+			if (distravled > 600)
 			{
 				isvisible = false;
 			}
@@ -53,7 +52,7 @@ namespace Tempt_Fate
 		}
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(startexture, hitbox, Color.White);
+			spriteBatch.Draw(tt, hitbox, Color.White);
 		}
 
 	}
