@@ -13,6 +13,7 @@ namespace Tempt_Fate
 {
 	public class Game1 : Game
 	{
+		//FIX HEALTH!!!!!!!!!!! like fighting and making the health better looking and not fly away
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		SpriteFont Fontone;
@@ -65,18 +66,15 @@ namespace Tempt_Fate
 				Screen.Update(gameTime);
 				titan = new Titan(0, 500);
 				titan.LoadContent(Content);
-				//mystic.LoadContent(Content);
-				//mystic = new Mystic(400, 500);
+				mystic = new Mystic(400, 500);
+				mystic.LoadContent(Content);
 			}
 			else
 			{
-				titan.Update(gameTime, Lines, gst1);
-				//mystic.Update(gameTime, Lines, gst2);
+				titan.Update(gameTime, Lines, gst1, mystic);
+				mystic.Update(gameTime, Lines, gst2, titan);
 			}
-			if (titan.firstCombo == true && titan.hitbox.Intersects(mystic.hitbox))
-			{
-				mystic.health -= titan.damage;
-			}
+			
 			base.Update(gameTime);
 		}
 		protected override void Draw(GameTime gameTime)
@@ -88,7 +86,7 @@ namespace Tempt_Fate
 			{
 				Screen.titleScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 			}
-			
+
 			else //play
 			{
 				foreach (Line Lines in Lines)
@@ -96,17 +94,23 @@ namespace Tempt_Fate
 					Lines.Draw(spriteBatch);
 				}
 				Screen.Draw(spriteBatch);
-				for (int i = 0; i < titan.health; i++)
+				if (titan.health >= 0)
 				{
-					spriteBatch.Draw(titan.healthTexture, new Rectangle(-30, -40, 25000 / titan.health, 100), Color.White);
+					for (int i = 0; i < titan.health; i++)
+					{
+						spriteBatch.Draw(titan.healthTexture, new Rectangle(-30, -40, 25000 / titan.health, 100), Color.White);
+					}
+					titan.Draw(spriteBatch);
 				}
 				//need to make it half the screen width instead of 250000
-				/*for (int i = 0; i < mystic.health; i++)
+				if (mystic.health >= 0)
 				{
-					spriteBatch.Draw(mystic.healthTexture2, new Rectangle(480, -40, 25000 / mystic.health, 100), Color.White);
-				}*/
-				titan.Draw(spriteBatch);
-				//mystic.Draw(spriteBatch);
+					for (int i = 0; i < mystic.health; i++)
+					{
+						spriteBatch.Draw(mystic.healthTexture2, new Rectangle(480, -40, 25000 / mystic.health, 100), Color.White);
+					}
+					mystic.Draw(spriteBatch);
+				}
 			}
 			spriteBatch.End();
 			base.Draw(gameTime);

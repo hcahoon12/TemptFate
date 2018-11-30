@@ -15,10 +15,12 @@ namespace Tempt_Fate
 	public class Character
 	{
 		public int damage;
+		protected Rectangle attackBox;
 		public bool firstCombo;
 		private static Timer combosReset;
 		protected static Timer shotDelay;
 		protected Texture2D Shottexture;
+		private Texture2D hitTexture;
 		public int health;
 		private Animation animation;
 		private Texture2D RightWalk;
@@ -53,8 +55,9 @@ namespace Tempt_Fate
 		}
 		public virtual void LoadContent(ContentManager Content)
 		{ }
-			public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture)
+			public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture, string hittexture)
 		{
+			hitTexture = Content.Load<Texture2D>(hittexture);
 			RightWalk = Content.Load<Texture2D>(rightTexture);
 			JumpAnimation = Content.Load<Texture2D>(jumpAnimation);
 			LeftWalk = Content.Load<Texture2D>(leftTexture);
@@ -63,8 +66,13 @@ namespace Tempt_Fate
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 		}
-		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
+		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
+			//fighting
+			if (attackBox.Intersects(enemy.hitbox))
+			{
+				enemy.TakeDamage(damage);
+			}
 			velocity.Y += .8f; //default gravity
 			Buttons? button=gamePadButtons.Update(gamepadstate);
 			if (button != null)
@@ -136,6 +144,12 @@ namespace Tempt_Fate
 			animation.Update(gameTime, hitbox);
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
+		}
+		public void TakeDamage(int damage)
+		{
+			animation.SetTexture(hitTexture,0);
+			animation.movetexture();
+			health = health - damage;
 		}
 		private void ComboReset(Object source, System.Timers.ElapsedEventArgs e)
 		{

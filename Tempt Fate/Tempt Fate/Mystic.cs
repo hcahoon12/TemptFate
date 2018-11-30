@@ -22,9 +22,9 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "ss", "TestMystic", "ss (2)", "Knife");
+			base.LoadContent(Content, "ss", "TestMystic", "ss (2)", "Knife","ss (2)");
 		}
-		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
+		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
 			try
 			{
@@ -42,8 +42,9 @@ namespace Tempt_Fate
 				}
 				
 			}
+
 			catch (ArgumentOutOfRangeException ex) { }
-			base.Update(gameTime, Lines, gamepadstate);
+			base.Update(gameTime, Lines, gamepadstate, enemy);
 		}
 		
 	}

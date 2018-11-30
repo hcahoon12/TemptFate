@@ -22,20 +22,21 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "TestMystic", "ss (2)", "TestMystic" , "Knife");
+			base.LoadContent(Content, "TestMystic", "ss (2)", "TestMystic" , "Knife","ss");
 		}
 		//might make a facing left aND RIGHT FUNCTION To change combos 
-		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate)
+		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
+			attackBox = new Rectangle(-300, 500, 20, 100);
 			UpdateShot();
 			try
 			{
 				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2])
 				{
-					hitbox.X = 600;
-					hitbox.Y = 100;
 					firstCombo = true;
-					damage = 100;
+					//set combo animation
+					damage = 1;
+					attackBox = new Rectangle(hitbox.X+100, hitbox.Y, 20,100);
 				}
 				if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2] || comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2])
 				{
@@ -45,7 +46,7 @@ namespace Tempt_Fate
 				
 			} catch (ArgumentOutOfRangeException ex) {}
 			
-			base.Update(gameTime, Lines, gamepadstate);
+			base.Update(gameTime, Lines, gamepadstate, enemy);
 		}
 	
 	}
