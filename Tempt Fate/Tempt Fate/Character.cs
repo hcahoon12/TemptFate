@@ -16,7 +16,6 @@ namespace Tempt_Fate
 	{
 		public int damage;
 		protected Rectangle attackBox;
-		public bool firstCombo;
 		private static Timer combosReset;
 		protected static Timer shotDelay;
 		protected Texture2D Shottexture;

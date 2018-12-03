@@ -77,3 +77,5 @@ C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\obj\x86\Debug\Tempt Fate.pdb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Healthbar.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Healthbar (3).xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Knife.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\mysticwalkright.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\mysticwalkleft.xnb

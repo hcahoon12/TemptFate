@@ -18,7 +18,7 @@ namespace Tempt_Fate
 		List<Buttons> comboThree = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
 		public Titan(int x, int y):base(new Rectangle(x, y, 100, 100), 6.6, 50)
 		{
-			firstCombo = false;
+
 		}
 		public override void LoadContent(ContentManager Content)
 		{
@@ -33,9 +33,8 @@ namespace Tempt_Fate
 			{
 				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2])
 				{
-					firstCombo = true;
 					//set combo animation
-					damage = 1;
+					damage = -1;
 					attackBox = new Rectangle(hitbox.X+100, hitbox.Y, 20,100);
 				}
 				if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2] || comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2])

@@ -3,7 +3,7 @@
   <SourceFile>C:/TemptFate/TemptFate/Tempt Fate/Tempt Fate/Content/SampleAudio_0.7mb.mp3</SourceFile>
   <SourceTime>2018-11-16T09:06:07.6836532-05:00</SourceTime>
   <DestFile>C:/TemptFate/TemptFate/Tempt Fate/Tempt Fate/Content/bin/Windows/SampleAudio_0.7mb.xnb</DestFile>
-  <DestTime>2018-11-16T09:23:22.7107707-05:00</DestTime>
+  <DestTime>2018-12-03T08:34:03.4234333-05:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>SongProcessor</Processor>
