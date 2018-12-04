@@ -30,7 +30,10 @@ namespace Tempt_Fate
 		public Rectangle hitbox;
 		public Texture2D healthTexture;
 		public Texture2D healthTexture2;
+		public Rectangle healthRectangle;
 		private bool Jumped;
+		protected bool facingLeft;
+		protected bool facingRight;
 		private Vector2 velocity;
 		private double speed;
 		private Gamepadbuttons gamePadButtons;
@@ -54,7 +57,7 @@ namespace Tempt_Fate
 		}
 		public virtual void LoadContent(ContentManager Content)
 		{ }
-			public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture, string hittexture)
+		public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture, string hittexture)
 		{
 			hitTexture = Content.Load<Texture2D>(hittexture);
 			RightWalk = Content.Load<Texture2D>(rightTexture);
@@ -65,7 +68,7 @@ namespace Tempt_Fate
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 		}
-		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
+		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate,Character enemy)
 		{
 			//fighting
 			if (attackBox.Intersects(enemy.hitbox))
@@ -112,6 +115,8 @@ namespace Tempt_Fate
 			}
 			 if (gamepadstate.IsButtonDown(Buttons.DPadRight) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickRight) )
 			{
+				facingRight = true;
+				facingLeft = false;
 				Direction = 1;
 				for (int i = 0; i < speed; i++)
 				{
@@ -124,6 +129,8 @@ namespace Tempt_Fate
 			}
 			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickLeft))
 			{
+				facingLeft = true;
+				facingRight = false;
 				Direction = -1;
 				for (int i = 0; i < speed; i++)
 				{
@@ -134,8 +141,7 @@ namespace Tempt_Fate
 				
 				SomeKeyPressed = true;
 			}
-
-				if (SomeKeyPressed == false)
+			if (SomeKeyPressed == false)
 				{
 					animation.ResetFrames();
 				}
@@ -157,6 +163,7 @@ namespace Tempt_Fate
 		}
 		private void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
 		{
+			shotDelay.Start();
 			shotDelay.Stop();
 		}
 		protected void Shoot()
@@ -167,17 +174,23 @@ namespace Tempt_Fate
 				shootlist.Add(newShot);
 			}
 		}
-		protected void UpdateShot()
+		public void UpdateShot(Character enemy)
 		{
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 			{
 				shootlist[i].Update();
+				if (shootlist[i].hitbox.Intersects(enemy.hitbox))
+				{
+					damage = 10;
+					shootlist[i].isvisible = false;
+				}
 				if (shootlist[i].isvisible == false)
 				{
 					shootlist.RemoveAt(i);
 					i--;
 				}
 			}
+			
 		}
 		public void WalkLeft(GameTime gameTime)
 		{

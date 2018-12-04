@@ -13,7 +13,8 @@ namespace Tempt_Fate
 {
 	public class Game1 : Game
 	{
-		//FIX HEALTH!!!!!!!!!!! like fighting and making the health better looking and not fly away
+		//fix attack box being on screen to long, add timer
+		//fix shooting and make it do damage and add delay that works
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		SpriteFont Fontone;
@@ -58,6 +59,7 @@ namespace Tempt_Fate
 
 		protected override void Update(GameTime gameTime)
 		{
+			
 			addLines();
 			GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
@@ -72,9 +74,12 @@ namespace Tempt_Fate
 			else
 			{
 				titan.Update(gameTime, Lines, gst1, mystic);
+				titan.UpdateShot(mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
+				mystic.UpdateShot(titan);
 			}
-			
+			titan.healthRectangle = new Rectangle(0, -40, titan.health, 100);
+			mystic.healthRectangle = new Rectangle(500, -40, mystic.health, 100);
 			base.Update(gameTime);
 		}
 		protected override void Draw(GameTime gameTime)
@@ -96,20 +101,13 @@ namespace Tempt_Fate
 				Screen.Draw(spriteBatch);
 				if (titan.health >= 0)
 				{
-					for (int i = 0; i < titan.health; i++)
-					{
-						spriteBatch.Draw(titan.healthTexture, new Rectangle(-30, -40, 25000 / titan.health, 100), Color.White);
-					}
 					titan.Draw(spriteBatch);
+					spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
 				}
-				//need to make it half the screen width instead of 250000
 				if (mystic.health >= 0)
 				{
-					for (int i = 0; i < mystic.health; i++)
-					{
-						spriteBatch.Draw(mystic.healthTexture2, new Rectangle(480, -40, 25000 / mystic.health, 100), Color.White);
-					}
 					mystic.Draw(spriteBatch);
+					spriteBatch.Draw(mystic.healthTexture2, mystic.healthRectangle, Color.White);
 				}
 			}
 			spriteBatch.End();
