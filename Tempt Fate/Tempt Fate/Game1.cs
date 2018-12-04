@@ -74,9 +74,7 @@ namespace Tempt_Fate
 			else
 			{
 				titan.Update(gameTime, Lines, gst1, mystic);
-				titan.UpdateShot(mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
-				mystic.UpdateShot(titan);
 			}
 			titan.healthRectangle = new Rectangle(0, -40, titan.health, 100);
 			mystic.healthRectangle = new Rectangle(500, -40, mystic.health, 100);

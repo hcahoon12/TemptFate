@@ -15,6 +15,7 @@ namespace Tempt_Fate
 	public class Character
 	{
 		public int damage;
+		protected bool canshoot;
 		protected Rectangle attackBox;
 		private static Timer combosReset;
 		protected static Timer shotDelay;
@@ -23,7 +24,7 @@ namespace Tempt_Fate
 		public int health;
 		private Animation animation;
 		private Texture2D RightWalk;
-		protected List<Shot> shootlist;
+		public List<Shot> shootlist;
 		protected int Direction;
 		private Texture2D LeftWalk;
 		private Texture2D JumpAnimation;
@@ -45,13 +46,14 @@ namespace Tempt_Fate
 			combosReset.Interval = 500;
 			combosReset.Elapsed += ComboReset;
 			shotDelay = new System.Timers.Timer();
-			shotDelay.Interval = 600;
+			shotDelay.Interval = 2000;
 			shotDelay.Elapsed += ShotDelay;
 			this.speed = speed;
 			this.health = health;
 			this.hitbox = hitbox;
 			Combos = new List<Buttons>();
 			shootlist = new List<Shot>();
+			canshoot = true;
 			Jumped = true;
 			gamePadButtons = new Gamepadbuttons();
 		}
@@ -138,7 +140,6 @@ namespace Tempt_Fate
 				    animation.movetexture();
 					hitbox.X--;
 				}
-				
 				SomeKeyPressed = true;
 			}
 			if (SomeKeyPressed == false)
@@ -161,10 +162,14 @@ namespace Tempt_Fate
 			Combos.Clear();
 			combosReset.Stop();
 		}
-		private void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
+		public void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
 		{
-			shotDelay.Start();
-			shotDelay.Stop();
+			if (canshoot == false)
+			{
+				shotDelay.Start();
+				shotDelay.Stop();
+				canshoot = true;
+			}
 		}
 		protected void Shoot()
 		{
@@ -174,24 +179,7 @@ namespace Tempt_Fate
 				shootlist.Add(newShot);
 			}
 		}
-		public void UpdateShot(Character enemy)
-		{
-			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
-			{
-				shootlist[i].Update();
-				if (shootlist[i].hitbox.Intersects(enemy.hitbox))
-				{
-					damage = 10;
-					shootlist[i].isvisible = false;
-				}
-				if (shootlist[i].isvisible == false)
-				{
-					shootlist.RemoveAt(i);
-					i--;
-				}
-			}
-			
-		}
+	
 		public void WalkLeft(GameTime gameTime)
 		{
 			animation.Update(gameTime, hitbox);
