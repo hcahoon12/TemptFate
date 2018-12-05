@@ -13,6 +13,7 @@ namespace Tempt_Fate
 {
 	public class Mystic : Character
 	{
+		//creates list of buttons that is are attacks
 		List<Buttons> comboOne = new List<Buttons>() { Buttons.A, Buttons.X, Buttons.Y };//y x a
 		List<Buttons> comboTwo = new List<Buttons>() { Buttons.X, Buttons.X, Buttons.A };//a x x
 		List<Buttons> comboThree = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.Y }; // y a y
@@ -28,9 +29,12 @@ namespace Tempt_Fate
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
+			//makes sure attackbox cannot do damage yet
 			attackBox = new Rectangle(-300, 500, 20, 100);
+			//try makes sure the inputs are in range
 			try
 			{
+				//creates a base attack that does minimal damage and decides where to put the attackbox based on facing right / left
 				if (gamepadstate.IsButtonDown(Buttons.X))
 				{
 					damage = 5;
@@ -67,6 +71,7 @@ namespace Tempt_Fate
 						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
+				//creates a combo based on if combos is equal to input from user
 				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2])
 				{
 					damage = 1;
@@ -103,6 +108,7 @@ namespace Tempt_Fate
 						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
+				//creates a shot that that is based on down left / right and x and also has a timer
 				if (specialShotLeft[0] == Combos[0] && specialShotLeft[1] == Combos[1] && specialShotLeft[2] == Combos[2] && canshoot == true)
 				{
 					shotDelay.Start();
@@ -115,6 +121,7 @@ namespace Tempt_Fate
 					Shoot();
 					canshoot = false;
 				}
+				//Update Bullets
 				for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 				{
 					shootlist[i].Update();

@@ -23,6 +23,7 @@ namespace Tempt_Fate
 		{
 			distravled = 0;
 			speed = 10 * direction;
+			//decided based on direction which way the character will shoot and where the bullet will first be created
 			if (direction < 0)
 			{
 				xOffset = 0;
@@ -44,6 +45,7 @@ namespace Tempt_Fate
 		{
 			hitbox.X += speed;
 			distravled += Math.Abs(speed);
+			//if the bullet travels more than 600 and if it isnt bullet will be active still
 			if (distravled > 600)
 			{
 				isvisible = false;

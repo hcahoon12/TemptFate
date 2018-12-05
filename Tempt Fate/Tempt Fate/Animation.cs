@@ -35,6 +35,7 @@ namespace Tempt_Fate
 		{
 
 		}
+		//set texture is called in character to get a new texture and what row the pictuere is in
 		public void SetTexture(Texture2D currentTexture, int row)
 		{
 			animation = currentTexture;
@@ -44,7 +45,8 @@ namespace Tempt_Fate
 			}
 			rowindex = row;
 		}
-		public void ResetFrames()
+		//this is called in character class when buttons are not pressed the picture will reset back to the first frame
+ 		public void ResetFrames()
 		{
 			colsindex = 0;
 			movetexture();
@@ -63,6 +65,7 @@ namespace Tempt_Fate
 				elapsed = 0;
 			}
 		}
+		//This makes the persons frame actually cycle through 
 		public void movetexture()
 		{
 			sourceRectangle = new Rectangle(animation.Width / cols * colsindex, animation.Height / rows * rowindex, animation.Width / cols, animation.Height / rows);

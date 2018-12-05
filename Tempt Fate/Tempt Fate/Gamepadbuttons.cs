@@ -46,6 +46,7 @@ namespace Tempt_Fate
 			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft);
 			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight);
 			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown);
+			//return buttons so combos can equal true
 			if (newA == true && oldA == false)
 			{
 				returnVal = Buttons.A;

@@ -14,7 +14,7 @@ namespace Tempt_Fate
 		public Texture2D texture;
 		public Vector2 position;
 		public Rectangle rectangle;
-
+		//creates a new line where later on can be given a texture position and size
 		public Line(Texture2D newTexture, Vector2 newPosition, int Width, int Height)
 		{
 			texture = newTexture;

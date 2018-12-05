@@ -19,7 +19,6 @@ namespace Tempt_Fate
 			titleScreen = new Levels();
 			FirstLevel = new Levels();
 			titleScreen.Bool = true;
-			
 		}
 		public void Update(GameTime gameTime)
 		{

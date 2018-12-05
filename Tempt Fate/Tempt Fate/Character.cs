@@ -42,12 +42,15 @@ namespace Tempt_Fate
 		protected List<Buttons> Combos;
 		public Character (Rectangle hitbox , double speed , int health)
 		{
+			//sets a couple of timers for polishing the fighting
 			combosReset = new System.Timers.Timer();
 			combosReset.Interval = 500;
 			combosReset.Elapsed += ComboReset;
 			shotDelay = new System.Timers.Timer();
 			shotDelay.Interval = 2000;
 			shotDelay.Elapsed += ShotDelay;
+			shotDelay.AutoReset = true;
+			shotDelay.Enabled = true;
 			this.speed = speed;
 			this.health = health;
 			this.hitbox = hitbox;
@@ -61,6 +64,7 @@ namespace Tempt_Fate
 		{ }
 		public void LoadContent(ContentManager Content, string rightTexture, string leftTexture , string jumpAnimation, string shottexture, string hittexture)
 		{
+			//gives textures a variable so when the character is created they can change the animations
 			hitTexture = Content.Load<Texture2D>(hittexture);
 			RightWalk = Content.Load<Texture2D>(rightTexture);
 			JumpAnimation = Content.Load<Texture2D>(jumpAnimation);
@@ -72,13 +76,14 @@ namespace Tempt_Fate
 		}
 		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate,Character enemy)
 		{
-			//fighting
+			//how the attacks do damage to the other character
 			if (attackBox.Intersects(enemy.hitbox))
 			{
 				enemy.TakeDamage(damage);
 			}
 			velocity.Y += .8f; //default gravity
 			Buttons? button=gamePadButtons.Update(gamepadstate);
+			//if no button is pressed then the timer will go off and the list clears 
 			if (button != null)
 			{
 				//reset timer
@@ -92,6 +97,7 @@ namespace Tempt_Fate
 					Combos.RemoveAt(4);
 				}
 			}
+			//cresates interaction for lines and characters
 			for (int l = 0; l < Lines.Count; l++)
 			{
 				if (hitbox.Intersects(Lines[l].rectangle))
@@ -100,12 +106,14 @@ namespace Tempt_Fate
 					velocity.Y = 0;
 				}
 			}
+			//makes ther character able to jump when he reaches the bottom of the screen
 			if (hitbox.Y + hitbox.Height >= 599)
 			{
 				velocity.Y = 0f;
 				Jumped = false;
 			}
 				SomeKeyPressed = false;
+			//if up is pressed on the gamepad the character can jump
 			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false || gamepadstate.IsButtonDown(Buttons.LeftThumbstickUp) && Jumped == false)
 			{
 				animation.Update(gameTime, hitbox);
@@ -115,20 +123,22 @@ namespace Tempt_Fate
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
+			//walking right
 			 if (gamepadstate.IsButtonDown(Buttons.DPadRight) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickRight) )
 			{
+				// detirmines if hes facing right for attack moves
 				facingRight = true;
 				facingLeft = false;
 				Direction = 1;
 				for (int i = 0; i < speed; i++)
 				{
 					WalkRight(gameTime);
-
 					animation.movetexture();
 					hitbox.X++;
 				}
 				SomeKeyPressed = true;
 			}
+			 //walking left
 			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) || gamepadstate.IsButtonDown(Buttons.LeftThumbstickLeft))
 			{
 				facingLeft = true;
@@ -142,6 +152,7 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
+			//if no button is being pressed reset animation
 			if (SomeKeyPressed == false)
 				{
 					animation.ResetFrames();
@@ -151,26 +162,29 @@ namespace Tempt_Fate
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
 		}
+		//makes enemies health minus the damage given
 		public void TakeDamage(int damage)
 		{
 			animation.SetTexture(hitTexture,0);
 			animation.movetexture();
 			health = health - damage;
 		}
+		//clears combos
 		private void ComboReset(Object source, System.Timers.ElapsedEventArgs e)
 		{
 			Combos.Clear();
 			combosReset.Stop();
 		}
+		//makes it where the character can only shoot once every two seconds
 		public void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
 		{
 			if (canshoot == false)
 			{
-				shotDelay.Start();
 				shotDelay.Stop();
 				canshoot = true;
 			}
 		}
+		//creates new bullet
 		protected void Shoot()
 		{
 			Shot newShot = new Shot(Shottexture, hitbox.X, hitbox.Y, Direction);
@@ -179,7 +193,7 @@ namespace Tempt_Fate
 				shootlist.Add(newShot);
 			}
 		}
-	
+	//below are a few functions to clean the update a bit
 		public void WalkLeft(GameTime gameTime)
 		{
 			animation.Update(gameTime, hitbox);
