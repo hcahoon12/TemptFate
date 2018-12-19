@@ -19,6 +19,7 @@ namespace Tempt_Fate
 		bool newLeft;
 		bool newRight;
 		bool newDown;
+		bool newUp;
 		bool oldA;
 		bool oldB;
 		bool oldX;
@@ -26,6 +27,7 @@ namespace Tempt_Fate
 		bool oldLeft;
 		bool oldRight;
 		bool oldDown;
+		bool oldUp;
 		public Gamepadbuttons()
 		{
 			oldA = false;
@@ -35,6 +37,7 @@ namespace Tempt_Fate
 			oldRight = false;
 			oldX = false;
 			oldY = false;
+			oldUp = false;
 		}
 		public Buttons? Update(GamePadState gamepadstate) //returns button if button that was just pressed 
 		{
@@ -46,22 +49,23 @@ namespace Tempt_Fate
 			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft);
 			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight);
 			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown);
+			newUp = gamepadstate.IsButtonDown(Buttons.DPadUp);
 			//return buttons so combos can equal true
 			if (newA == true && oldA == false)
 			{
 				returnVal = Buttons.A;
 			}
-			
+
 			else if (newB == true && oldB == false)
 			{
 				returnVal = Buttons.B;
 			}
-			
+
 			else if (newX == true && oldX == false)
 			{
 				returnVal = Buttons.X;
 			}
-			
+
 			else if (newY == true && oldY == false)
 			{
 				returnVal = Buttons.Y;
@@ -74,10 +78,13 @@ namespace Tempt_Fate
 			{
 				returnVal = Buttons.DPadRight;
 			}
-			
 			else if (newDown == true && oldDown == false)
 			{
 				returnVal = Buttons.DPadDown;
+			}
+			else if (newUp == true && oldUp == false)
+			{
+				returnVal = Buttons.DPadUp;
 			}
 			oldA = newA;
 			oldB = newB;
@@ -86,6 +93,7 @@ namespace Tempt_Fate
 			oldLeft = newLeft;
 			oldY = newY;
 			oldDown = newDown;
+			oldUp = newUp;
 			return returnVal; 
 		}
 	}

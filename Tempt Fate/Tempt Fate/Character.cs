@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using System.Timers;
 
+
 namespace Tempt_Fate
 {
 	public class Character
