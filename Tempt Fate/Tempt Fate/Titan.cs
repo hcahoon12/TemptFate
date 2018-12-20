@@ -53,9 +53,9 @@ namespace Tempt_Fate
 						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
-				//creates a base attack that does minimal damage and decides where to put the attackbox based on facing right / left
-				if (baseAttackOne[0] == Combos[0])
+				if (gamepadstate.IsButtonDown(Buttons.X))
 				{
+					//attackDelay.Start();
 					damage = 5;
 					if (facingRight == true)
 					{

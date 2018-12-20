@@ -19,6 +19,7 @@ namespace Tempt_Fate
 		protected bool canshoot;
 		protected Rectangle attackBox;
 		private static Timer combosReset;
+		protected static Timer attackDelay;
 		protected static Timer shotDelay;
 		protected Texture2D Shottexture;
 		private Texture2D hitTexture;
@@ -46,6 +47,9 @@ namespace Tempt_Fate
 		public Character (Rectangle hitbox , double speed , int health)
 		{
 			//sets a couple of timers for polishing the fighting
+			attackDelay = new System.Timers.Timer();
+			attackDelay.Interval = 1000;
+			attackDelay.Elapsed += AttackDelay;
 			combosReset = new System.Timers.Timer();
 			combosReset.Interval = 500;
 			combosReset.Elapsed += ComboReset;
@@ -177,6 +181,11 @@ namespace Tempt_Fate
 		{
 			Combos.Clear();
 			combosReset.Stop();
+		}
+		public void AttackDelay(Object source, System.Timers.ElapsedEventArgs e)
+		{
+			attackBox = new Rectangle(-300, 500 , 20, 100);
+			attackDelay.Stop();
 		}
 		//makes it where the character can only shoot once every two seconds
 		public void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
