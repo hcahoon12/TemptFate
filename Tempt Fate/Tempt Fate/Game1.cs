@@ -63,7 +63,7 @@ namespace Tempt_Fate
 				Screen.Update(gameTime);
 				titan = new Titan(0, 500);
 				titan.LoadContent(Content);
-				mystic = new Mystic(400, 500);
+				mystic = new Mystic(800, 500);
 				mystic.LoadContent(Content);
 			}
 			else if (Screen.selectScreen.Bool == true)
@@ -75,11 +75,20 @@ namespace Tempt_Fate
 				Screen.Update(gameTime);
 				titan.Update(gameTime, Lines, gst1, mystic);
 			}
+			else if (Screen.pauseScreen.Bool == true)
+			{
+				Screen.Update(gameTime);
+			}
 			//once they leave titlescreen players update and can fight
 			else
 			{
 				titan.Update(gameTime, Lines, gst1, mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
+				if (gst1.IsButtonDown(Buttons.Start))
+				{
+					Screen.pauseScreen.Bool = true;
+					Screen.continuePlay = true;
+				}
 			}
 			//creates a health bar that can be taken away from 
 			titan.healthRectangle = new Rectangle(0, -40, titan.health, 100);
@@ -90,7 +99,6 @@ namespace Tempt_Fate
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 			spriteBatch.Begin();
-
 			if (Screen.titleScreen.Bool == true)
 			{
 				Screen.titleScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
@@ -99,7 +107,9 @@ namespace Tempt_Fate
 			{
 				Screen.selectScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
+				titan.shootlist.Clear();
 			}
+			//gets player on screen and gives actions for the plauer to complete
 			else if (Screen.tutorialScreen.Bool == true)
 			{
 				Screen.tutorialScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
@@ -130,6 +140,27 @@ namespace Tempt_Fate
 				}
 			}
 			//play game
+			else if (Screen.pauseScreen.Bool == true)
+			{
+				Screen.pauseScreen.Draw(spriteBatch, new Rectangle(0 , 0 ,1000, 600));
+				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
+				spriteBatch.DrawString(Fontone, "Titan (facing right) " + titan.health, new Vector2(20, 20), Color.Purple);
+				spriteBatch.DrawString(Fontone, "X ", new Vector2(20, 50), Color.White);
+				spriteBatch.DrawString(Fontone, "Y ", new Vector2(20, 80), Color.White);
+				spriteBatch.DrawString(Fontone, "A ", new Vector2(20, 110), Color.White);
+				spriteBatch.DrawString(Fontone, "Y - X - A ", new Vector2(20, 140), Color.White);
+				spriteBatch.DrawString(Fontone, "A - X - X ", new Vector2(20, 170), Color.White);
+				spriteBatch.DrawString(Fontone, "Y - A - Y ", new Vector2(20, 200), Color.White);
+				spriteBatch.DrawString(Fontone, "Down - Right - X ", new Vector2(20, 230), Color.White);
+				spriteBatch.DrawString(Fontone, "Mystic (facing left) " + mystic.health, new Vector2(650, 20), Color.Purple);
+				spriteBatch.DrawString(Fontone, "X ", new Vector2(650, 50), Color.White);
+				spriteBatch.DrawString(Fontone, "Y ", new Vector2(650, 80), Color.White);
+				spriteBatch.DrawString(Fontone, "A ", new Vector2(650, 110), Color.White);
+				spriteBatch.DrawString(Fontone, "Y - X - A ", new Vector2(650, 140), Color.White);
+				spriteBatch.DrawString(Fontone, "A - A - Y ", new Vector2(650, 170), Color.White);
+				spriteBatch.DrawString(Fontone, "X - Y - X ", new Vector2(650, 200), Color.White);
+				spriteBatch.DrawString(Fontone, "Down - Left - X ", new Vector2(650, 230), Color.White);
+			}
 			else
 			{
 				foreach (Line Lines in Lines)
@@ -143,6 +174,7 @@ namespace Tempt_Fate
 					{
 						saveFile("titan");
 						Screen.titleScreen.Bool = true;
+						Screen.Play = true;
 					}
 					titan.Draw(spriteBatch);
 					spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
@@ -153,8 +185,8 @@ namespace Tempt_Fate
 					{
 						saveFile("mystic");
 						Screen.titleScreen.Bool = true;
+						Screen.Play = true;
 					}
-
 					mystic.Draw(spriteBatch);
 					spriteBatch.Draw(mystic.healthTexture2, mystic.healthRectangle, Color.White);
 				}

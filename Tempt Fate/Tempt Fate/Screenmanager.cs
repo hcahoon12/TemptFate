@@ -21,11 +21,14 @@ namespace Tempt_Fate
 		public bool tutorialfive;
 		public bool tutorialsix;
 		public bool tutorialdone;
+		public bool continuePlay;
+		public bool exit;
 		public Levels FirstLevel;
 		public Levels titleScreen;
 		public Levels selectScreen;
 		public Levels tutorialScreen;
-		private bool Play;
+		public Levels pauseScreen;
+		public bool Play;
 		private bool Tutorial;
 		private bool Quit;
 		public Rectangle LinePosition;
@@ -33,7 +36,7 @@ namespace Tempt_Fate
 		private int x;
 		private int y;
 		private Gamepadbuttons gamePadButtons;
-		protected List<Buttons> Combos;
+		private List<Buttons> Combos;
 
 		public Screenmanager()
 		{
@@ -42,8 +45,12 @@ namespace Tempt_Fate
 			FirstLevel = new Levels();
 			selectScreen = new Levels();
 			tutorialScreen = new Levels();
+			pauseScreen = new Levels();
 			LinePosition = new Rectangle(x, y, 0, 0);
 			titleScreen.Bool = true;
+			selectScreen.Bool = false;
+			FirstLevel.Bool = false;
+			pauseScreen.Bool = false;
 			Play = true;
 			Tutorial = false;
 			Quit = false;
@@ -55,11 +62,20 @@ namespace Tempt_Fate
 			titleScreen.Update();
 			FirstLevel.Update();
 			selectScreen.Update();
+			pauseScreen.Update();
 			tutorialScreen.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
 			var KeyboardState = Keyboard.GetState();
 			Buttons? button=gamePadButtons.Update(gst1);
-		// maybe put this in	Combos.Insert(0, (Buttons)button);
+			//makes sure combos are all set for the tutorial
+			if (button != null)
+			{
+				Combos.Insert(0, (Buttons)button);
+			}
+			if (Combos.Count >= 5)
+			{
+				Combos.RemoveAt(4);
+			}
 			if (titleScreen.Bool == true)
 			{
 				if (gst1.IsButtonDown(Buttons.Start) || KeyboardState.IsKeyDown(Keys.Space))
@@ -68,10 +84,9 @@ namespace Tempt_Fate
 					selectScreen.Bool = true;
 				}
 			}
-			//select screen
-			if (selectScreen.Bool == true)
+			//select screen lets player choose between three options
+			else if (selectScreen.Bool == true)
 			{
-				
 				if (button == Buttons.DPadDown && Play == true)
 				{
 					Tutorial = true;
@@ -95,17 +110,18 @@ namespace Tempt_Fate
 			}
 			if (Play == true)
 			{
-				LinePosition = new Rectangle(50, 50, 100, 100);
-				if (gst1.IsButtonDown(Buttons.A))
+				LinePosition = new Rectangle(50, 100, 100, 100);
+				if (button == Buttons.A)
 				{
 					FirstLevel.Bool = true;
 					selectScreen.Bool = false;
+					tutorialScreen.Bool = false;
 				}
 			}
 			else if (Tutorial == true)
 			{
 				LinePosition = new Rectangle(50, 250, 100, 100);
-				if (gst1.IsButtonDown(Buttons.A))
+				if (button == Buttons.A)
 				{
 					tutorialScreen.Bool = true;
 					selectScreen.Bool = false;
@@ -114,7 +130,7 @@ namespace Tempt_Fate
 			else if (Quit == true)
 			{
 				LinePosition = new Rectangle(50, 450, 100, 100);
-				if (gst1.IsButtonDown(Buttons.A))
+				if (button == Buttons.A)
 				{
 					System.Environment.Exit(0);
 				}
@@ -183,7 +199,43 @@ namespace Tempt_Fate
 			}
 			if (tutorialdone == true)
 			{
-				titleScreen.Bool = true;
+				selectScreen.Bool = true;
+				tutorialdone = false;
+				Play = true;
+			}
+			else if (pauseScreen.Bool == true)
+			{
+				if (gst1.IsButtonDown(Buttons.DPadDown))
+				{
+					continuePlay = false;
+					exit = true;
+				}
+				else if (gst1.IsButtonDown(Buttons.DPadUp))
+				{
+					exit = false;
+					continuePlay = true;
+				}
+			}
+			if (continuePlay == true)
+			{
+				LinePosition = new Rectangle(200, 300, 100, 100);
+				if (button == Buttons.A)
+				{
+					FirstLevel.Bool = true;
+					pauseScreen.Bool = false;
+					continuePlay = false;
+				}
+			}
+			else if (exit == true)
+			{
+				LinePosition = new Rectangle(200, 450, 100, 100);
+				if (button == Buttons.A)
+				{
+					selectScreen.Bool = true;
+					pauseScreen.Bool = false;
+					exit = false;
+					Play = true;
+				}
 			}
 		}
 		public void LoadContent(ContentManager Content)
@@ -193,6 +245,7 @@ namespace Tempt_Fate
 			selectScreen.LoadContent(Content, "SelectScreen");
 			LineTexture = Content.Load<Texture2D>("Arrow");
 			tutorialScreen.LoadContent(Content, "tutoialScreen");
+			pauseScreen.LoadContent(Content, "pauseScreen");
 		}
 		public virtual void Draw(SpriteBatch spritebatch)
 		{

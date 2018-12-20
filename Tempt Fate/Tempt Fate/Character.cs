@@ -41,6 +41,8 @@ namespace Tempt_Fate
 		private Gamepadbuttons gamePadButtons;
 		private bool SomeKeyPressed;
 		protected List<Buttons> Combos;
+		public int x;
+		public int y;
 		public Character (Rectangle hitbox , double speed , int health)
 		{
 			//sets a couple of timers for polishing the fighting

@@ -13,6 +13,7 @@ namespace Tempt_Fate
 	class Gamepadbuttons
 	{
 		bool newA;
+		bool newStart;
 		bool newB;
 		bool newX;
 		bool newY;
@@ -27,6 +28,7 @@ namespace Tempt_Fate
 		bool oldLeft;
 		bool oldRight;
 		bool oldDown;
+		bool oldStart;
 		bool oldUp;
 		public Gamepadbuttons()
 		{
@@ -37,11 +39,13 @@ namespace Tempt_Fate
 			oldRight = false;
 			oldX = false;
 			oldY = false;
+			oldStart = false;
 			oldUp = false;
 		}
 		public Buttons? Update(GamePadState gamepadstate) //returns button if button that was just pressed 
 		{
 			Buttons? returnVal = null;
+			newStart = gamepadstate.IsButtonDown(Buttons.Start);
 			newA = gamepadstate.IsButtonDown(Buttons.A);
 			newB = gamepadstate.IsButtonDown(Buttons.B);
 			newX = gamepadstate.IsButtonDown(Buttons.X);
@@ -55,17 +59,18 @@ namespace Tempt_Fate
 			{
 				returnVal = Buttons.A;
 			}
-
+			else if (newStart == true && newStart == false)
+			{
+				returnVal = Buttons.Start;
+			}
 			else if (newB == true && oldB == false)
 			{
 				returnVal = Buttons.B;
 			}
-
 			else if (newX == true && oldX == false)
 			{
 				returnVal = Buttons.X;
 			}
-
 			else if (newY == true && oldY == false)
 			{
 				returnVal = Buttons.Y;
@@ -94,6 +99,7 @@ namespace Tempt_Fate
 			oldY = newY;
 			oldDown = newDown;
 			oldUp = newUp;
+			oldStart = newStart;
 			return returnVal; 
 		}
 	}

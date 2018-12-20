@@ -20,7 +20,7 @@ namespace Tempt_Fate
 		List<Buttons> comboThree = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.Y }; // y a y
 		List<Buttons> specialShotLeft = new List<Buttons>() { Buttons.X, Buttons.DPadLeft, Buttons.DPadDown };//down left X
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
-		public Titan(int x, int y):base(new Rectangle(x, y, 100, 100), 6.6, 500)
+		public Titan(int x,int y):base(new Rectangle(x, y, 100, 100), 6.6, 500)
 		{
 			facingRight = true;
 		}

@@ -15,8 +15,8 @@ namespace Tempt_Fate
 	{
 		//creates list of buttons that is are attacks
 		List<Buttons> comboOne = new List<Buttons>() { Buttons.A, Buttons.X, Buttons.Y };//y x a
-		List<Buttons> comboTwo = new List<Buttons>() { Buttons.X, Buttons.X, Buttons.A };//a x x
-		List<Buttons> comboThree = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.Y }; // y a y
+		List<Buttons> comboTwo = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.A };//a a y
+		List<Buttons> comboThree = new List<Buttons>() { Buttons.X, Buttons.Y, Buttons.X }; // x y x
 		List<Buttons> specialShotLeft = new List<Buttons>() { Buttons.X, Buttons.DPadLeft, Buttons.DPadDown };//down left X
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
 		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6, 500)

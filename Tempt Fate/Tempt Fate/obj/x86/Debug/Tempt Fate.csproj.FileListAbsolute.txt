@@ -82,3 +82,4 @@ C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\mysti
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Arrow.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SelectScreen.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\tutoialScreen.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\pauseScreen.xnb
