@@ -19,7 +19,7 @@ namespace Tempt_Fate
 		List<Buttons> comboThree = new List<Buttons>() { Buttons.X, Buttons.Y, Buttons.X }; // x y x
 		List<Buttons> specialShotLeft = new List<Buttons>() { Buttons.X, Buttons.DPadLeft, Buttons.DPadDown };//down left X
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
-		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6, 500)
+		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6, 500, 600)
 		{
 			facingLeft = true;
 		}
@@ -29,100 +29,203 @@ namespace Tempt_Fate
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
-			//makes sure attackbox cannot do damage yet
-			attackBox = new Rectangle(-300, 500, 20, 100);
+			//makes sure modifyAttackBox cannot do damage yet
+			modifyAttackBox(-300, 500, 20, 100);
+			//mana
+			if (gamepadstate.IsButtonDown(Buttons.B) && mana < 600)
+			{
+				mana += 1.5f;
+			}
 			//try makes sure the inputs are in range
 			try
 			{
-				//creates a base attack that does minimal damage and decides where to put the attackbox based on facing right / left
-				if (gamepadstate.IsButtonDown(Buttons.X))
+				if (gamepadstate.IsButtonDown(Buttons.X) && canAttack == true)
 				{
-					damage = 5;
+					if (enemy.block == true)
+					{
+						blockDamage = 1.8f;
+						mana -= 2;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 8;
+						damage = 3;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
-				if (gamepadstate.IsButtonDown(Buttons.Y))
+				if (gamepadstate.IsButtonDown(Buttons.Y) && canAttack == true)
 				{
-					damage = 5;
+
+					if (enemy.block == true)
+					{
+						blockDamage = 2.4f;
+						mana -= 3;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 12;
+						damage = 7;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
-				if (gamepadstate.IsButtonDown(Buttons.A))
+				if (gamepadstate.IsButtonDown(Buttons.A) && canAttack == true)
 				{
-					damage = 5;
+					if (enemy.block == true)
+					{
+						blockDamage = 2;
+						mana -= 3;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 10;
+						damage = 5;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
 				//creates a combo based on if combos is equal to input from user
-				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2])
+				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2] && canAttack == true)
 				{
-					damage = 1;
+					if (enemy.block == true)
+					{
+						blockDamage = 3f;
+						mana -= 5;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 20;
+						damage = 10;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
-				if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2])
+				if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2] && canAttack == true)
 				{
-					damage = 1;
+					if (enemy.block == true)
+					{
+						blockDamage = 2.4f;
+						mana -= 3;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 13;
+						damage = 8;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
-				if (comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2])
+				if (comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2] && canAttack == true)
 				{
-					damage = 1;
+					if (enemy.block == true)
+					{
+						blockDamage = 5f;
+						mana -= 6.5f;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 20;
+						damage = 15;
+					}
+					else { damage = 0; }
 					if (facingRight == true)
 					{
-						attackBox = new Rectangle(hitbox.X + 100, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						attackBox = new Rectangle(hitbox.X - 20, hitbox.Y, 20, 100);
+						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 				}
 				//creates a shot that that is based on down left / right and x and also has a timer
-				if (specialShotLeft[0] == Combos[0] && specialShotLeft[1] == Combos[1] && specialShotLeft[2] == Combos[2] && canshoot == true)
+				if (specialShotLeft[0] == Combos[0] && specialShotLeft[1] == Combos[1] && specialShotLeft[2] == Combos[2] && canshoot == true && canAttack == true)
 				{
+					if (enemy.block == true)
+					{
+						blockDamage = 1.5f;
+						mana -= 2;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 10;
+						damage = 5;
+					}
+					else { damage = 0; }
 					shotDelay.Start();
 					Shoot();
 					canshoot = false;
 				}
-				if (specialShotRight[0] == Combos[0] && specialShotRight[1] == Combos[1] && specialShotRight[2] == Combos[2] && canshoot == true)
+				if (specialShotRight[0] == Combos[0] && specialShotRight[1] == Combos[1] && specialShotRight[2] == Combos[2] && canshoot == true && canAttack == true)
 				{
+					if (enemy.block == true)
+					{
+						blockDamage = 1.5f;
+						mana -= 2;
+					}
+					if (mana > 0 && enemy.block == false)
+					{
+						mana -= 10;
+						damage = 5;
+					}
+					else { damage = 0; }
 					shotDelay.Start();
 					Shoot();
 					canshoot = false;
 				}
-				//Update Bullets
-				for (int i = 0; i < Math.Abs(shootlist.Count); i++)
+				//block
+				if (gamepadstate.IsButtonDown(Buttons.RightTrigger))
+				{
+					animation.SetTexture(healthTexture, 0);
+					block = true;
+					canAttack = false;
+					canWalk = false;
+				}
+				else
+				{
+					block = false;
+					canAttack = true;
+					canWalk = true;
+				}
+			}
+			catch (ArgumentOutOfRangeException ex) { }
+			//Update Bullets
+			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 				{
 					shootlist[i].Update();
 					attackBox = shootlist[i].hitbox;
@@ -137,9 +240,6 @@ namespace Tempt_Fate
 						i--;
 					}
 				}
-			}
-
-			catch (ArgumentOutOfRangeException ex) { }
 			base.Update(gameTime, Lines, gamepadstate, enemy);
 		}
 		

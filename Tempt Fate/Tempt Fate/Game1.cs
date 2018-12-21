@@ -15,6 +15,7 @@ namespace Tempt_Fate
 	public class Game1 : Game
 	{
 		//fix attack box being on screen to long, add timer
+		//fix animation for combos and blocking, wont rotate through frames
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		SpriteFont Fontone;
@@ -69,6 +70,7 @@ namespace Tempt_Fate
 			else if (Screen.selectScreen.Bool == true)
 			{
 				Screen.Update(gameTime);
+				titan.mana = 500;
 			}
 			else if (Screen.tutorialScreen.Bool == true)
 			{
@@ -84,7 +86,7 @@ namespace Tempt_Fate
 			{
 				titan.Update(gameTime, Lines, gst1, mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
-				if (gst1.IsButtonDown(Buttons.Start))
+				if (gst1.IsButtonDown(Buttons.Start) || gst2.IsButtonDown(Buttons.Start))
 				{
 					Screen.pauseScreen.Bool = true;
 					Screen.continuePlay = true;
@@ -92,7 +94,9 @@ namespace Tempt_Fate
 			}
 			//creates a health bar that can be taken away from 
 			titan.healthRectangle = new Rectangle(0, -40, titan.health, 100);
+			titan.manabox = new Rectangle(5, 20, (int)titan.mana, 40);
 			mystic.healthRectangle = new Rectangle(500, -40, mystic.health, 100);
+			mystic.manabox = new Rectangle(500, 20, (int)mystic.mana, 40);
 			base.Update(gameTime);
 		}
 		protected override void Draw(GameTime gameTime)
@@ -114,13 +118,14 @@ namespace Tempt_Fate
 			{
 				Screen.tutorialScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 				titan.Draw(spriteBatch);
+				spriteBatch.Draw(titan.manaTexture, titan.manabox, Color.White);
 				if (Screen.tutorialone == true)
 				{
-					spriteBatch.DrawString(Fontone, "Press right on the arrow pad or joystick to move", new Vector2(50, 100), Color.Black);
+					spriteBatch.DrawString(Fontone, "Press right on the arrow pad to move", new Vector2(50, 100), Color.Black);
 				}
 				else if (Screen.tutorialtwo == true)
 				{
-					spriteBatch.DrawString(Fontone, "press up on the arrow pad or joystick to jump", new Vector2(50, 100), Color.Black);
+					spriteBatch.DrawString(Fontone, "press up on the arrow pad to jump", new Vector2(50, 100), Color.Black);
 				}
 				else if (Screen.tutorialthree == true)
 				{
@@ -137,6 +142,16 @@ namespace Tempt_Fate
 				else if (Screen.tutorialsix == true)
 				{
 					spriteBatch.DrawString(Fontone, "press down right x to shoot", new Vector2(50, 100), Color.Black);
+				}
+				else if (Screen.tutorialseven == true)
+				{
+					spriteBatch.DrawString(Fontone, "Now that you have used some moves you'll need", new Vector2(50, 100), Color.Black);
+					spriteBatch.DrawString(Fontone, "to restore mana so you can use more. Press B to restore mana", new Vector2(50, 150), Color.Black);
+				}
+				else if (Screen.tutorialeight == true)
+				{
+					spriteBatch.DrawString(Fontone, "'But what if they attack me?'", new Vector2(50, 100), Color.Black);
+					spriteBatch.DrawString(Fontone, "dont worry RT blocks", new Vector2(50, 150), Color.Black);
 				}
 			}
 			//play game
@@ -176,8 +191,13 @@ namespace Tempt_Fate
 						Screen.titleScreen.Bool = true;
 						Screen.Play = true;
 					}
-					titan.Draw(spriteBatch);
-					spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
+					if (titan.mana >= 0)
+					{
+						spriteBatch.Draw(titan.manaTexture, titan.manabox, Color.White);
+					}
+						titan.Draw(spriteBatch);
+						spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
+					
 				}
 				if (mystic.health >= 0)
 				{
@@ -187,6 +207,10 @@ namespace Tempt_Fate
 						Screen.titleScreen.Bool = true;
 						Screen.Play = true;
 					}
+					if (mystic.mana >= 0)
+					{
+						spriteBatch.Draw(mystic.manaTexture, mystic.manabox, Color.White);
+					}
 					mystic.Draw(spriteBatch);
 					spriteBatch.Draw(mystic.healthTexture2, mystic.healthRectangle, Color.White);
 				}
@@ -194,7 +218,7 @@ namespace Tempt_Fate
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}
-
+		public int wins;
 		public void saveFile(string username)
 		{
 			try
@@ -221,7 +245,7 @@ namespace Tempt_Fate
 						string[] lineArray = line.Split(',');
 						if (lineArray[0].Equals(username))
 						{
-							int wins = Convert.ToInt32(lineArray[1]) + 1;
+							wins = Convert.ToInt32(lineArray[1]) + 1;
 							string lineToWrite = username + "," + wins;
 							nf.WriteLine(lineToWrite);
 						}

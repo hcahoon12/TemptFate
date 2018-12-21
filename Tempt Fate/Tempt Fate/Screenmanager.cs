@@ -20,6 +20,8 @@ namespace Tempt_Fate
 		public bool tutorialfour;
 		public bool tutorialfive;
 		public bool tutorialsix;
+		public bool tutorialseven;
+		public bool tutorialeight;
 		public bool tutorialdone;
 		public bool continuePlay;
 		public bool exit;
@@ -65,8 +67,9 @@ namespace Tempt_Fate
 			pauseScreen.Update();
 			tutorialScreen.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			var KeyboardState = Keyboard.GetState();
-			Buttons? button=gamePadButtons.Update(gst1);
+			var gst2 = GamePad.GetState(PlayerIndex.Two);
+			Buttons? button = gamePadButtons.Update(gst1);
+			Buttons? buttons = gamePadButtons.Update(gst2);
 			//makes sure combos are all set for the tutorial
 			if (button != null)
 			{
@@ -78,7 +81,7 @@ namespace Tempt_Fate
 			}
 			if (titleScreen.Bool == true)
 			{
-				if (gst1.IsButtonDown(Buttons.Start) || KeyboardState.IsKeyDown(Keys.Space))
+				if (gst1.IsButtonDown(Buttons.Start))
 				{
 					titleScreen.Bool = false;
 					selectScreen.Bool = true;
@@ -120,7 +123,7 @@ namespace Tempt_Fate
 			}
 			else if (Tutorial == true)
 			{
-				LinePosition = new Rectangle(50, 250, 100, 100);
+				LinePosition = new Rectangle(50, 280, 100, 100);
 				if (button == Buttons.A)
 				{
 					tutorialScreen.Bool = true;
@@ -190,27 +193,44 @@ namespace Tempt_Fate
 						if (Shot[0] == Combos[0] && Shot[1] == Combos[1] && Shot[2] == Combos[2])
 						{
 							tutorialsix = false;
-							tutorialdone = true;
+							tutorialseven = true;
 						}
 					}
-					catch(ArgumentOutOfRangeException ex)
+					catch (ArgumentOutOfRangeException ex)
 					{ }
+				}
+				else if (tutorialseven == true)
+				{
+					if (gst1.IsButtonDown(Buttons.B))
+					{
+						tutorialseven = false;
+						tutorialeight = true;
+					}
+				}
+				else if (tutorialeight == true)
+				{
+					if (gst1.IsButtonDown(Buttons.RightTrigger))
+					{
+						tutorialeight = false;
+						tutorialdone = true;
+					}
 				}
 			}
 			if (tutorialdone == true)
 			{
 				selectScreen.Bool = true;
 				tutorialdone = false;
+				tutorialone = true;
 				Play = true;
 			}
 			else if (pauseScreen.Bool == true)
 			{
-				if (gst1.IsButtonDown(Buttons.DPadDown))
+				if (gst1.IsButtonDown(Buttons.DPadDown) || gst2.IsButtonDown(Buttons.DPadDown))
 				{
 					continuePlay = false;
 					exit = true;
 				}
-				else if (gst1.IsButtonDown(Buttons.DPadUp))
+				else if (gst1.IsButtonDown(Buttons.DPadUp) || gst2.IsButtonDown(Buttons.DPadUp))
 				{
 					exit = false;
 					continuePlay = true;
@@ -219,7 +239,7 @@ namespace Tempt_Fate
 			if (continuePlay == true)
 			{
 				LinePosition = new Rectangle(200, 300, 100, 100);
-				if (button == Buttons.A)
+				if (button == Buttons.A || buttons == Buttons.A)
 				{
 					FirstLevel.Bool = true;
 					pauseScreen.Bool = false;
@@ -229,7 +249,7 @@ namespace Tempt_Fate
 			else if (exit == true)
 			{
 				LinePosition = new Rectangle(200, 450, 100, 100);
-				if (button == Buttons.A)
+				if (button == Buttons.A || buttons == Buttons.A)
 				{
 					selectScreen.Bool = true;
 					pauseScreen.Bool = false;
