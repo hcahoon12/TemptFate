@@ -67,9 +67,7 @@ namespace Tempt_Fate
 			pauseScreen.Update();
 			tutorialScreen.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			var gst2 = GamePad.GetState(PlayerIndex.Two);
 			Buttons? button = gamePadButtons.Update(gst1);
-			Buttons? buttons = gamePadButtons.Update(gst2);
 			//makes sure combos are all set for the tutorial
 			if (button != null)
 			{
@@ -225,12 +223,12 @@ namespace Tempt_Fate
 			}
 			else if (pauseScreen.Bool == true)
 			{
-				if (gst1.IsButtonDown(Buttons.DPadDown) || gst2.IsButtonDown(Buttons.DPadDown))
+				if (gst1.IsButtonDown(Buttons.DPadDown))
 				{
 					continuePlay = false;
 					exit = true;
 				}
-				else if (gst1.IsButtonDown(Buttons.DPadUp) || gst2.IsButtonDown(Buttons.DPadUp))
+				else if (gst1.IsButtonDown(Buttons.DPadUp))
 				{
 					exit = false;
 					continuePlay = true;
@@ -239,7 +237,7 @@ namespace Tempt_Fate
 			if (continuePlay == true)
 			{
 				LinePosition = new Rectangle(200, 300, 100, 100);
-				if (button == Buttons.A || buttons == Buttons.A)
+				if (button == Buttons.A)
 				{
 					FirstLevel.Bool = true;
 					pauseScreen.Bool = false;
@@ -249,7 +247,7 @@ namespace Tempt_Fate
 			else if (exit == true)
 			{
 				LinePosition = new Rectangle(200, 450, 100, 100);
-				if (button == Buttons.A || buttons == Buttons.A)
+				if (button == Buttons.A)
 				{
 					selectScreen.Bool = true;
 					pauseScreen.Bool = false;
