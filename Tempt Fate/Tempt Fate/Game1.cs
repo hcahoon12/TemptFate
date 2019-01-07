@@ -34,7 +34,6 @@ namespace Tempt_Fate
 			graphics.IsFullScreen = false;
 			Content.RootDirectory = "Content";
 		}
-
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);

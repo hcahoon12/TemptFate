@@ -211,7 +211,6 @@ namespace Tempt_Fate
 				//block
 				if (gamepadstate.IsButtonDown(Buttons.RightTrigger))
 				{
-					animation.SetTexture(healthTexture, 0);
 					block = true;
 					canAttack = false;
 					canWalk = false;

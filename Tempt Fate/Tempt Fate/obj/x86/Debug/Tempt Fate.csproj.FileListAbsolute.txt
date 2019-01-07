@@ -84,3 +84,5 @@ C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Selec
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\tutoialScreen.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\pauseScreen.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\manaTexture.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\baseWalkRight.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\baseWalkLeft.xnb
