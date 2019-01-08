@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
+using System.Net;
 
 namespace Tempt_Fate
 {
@@ -20,35 +21,35 @@ namespace Tempt_Fate
         [STAThread]
         static void Main()
         {
-			try {
+			//try catch is if crashes the player can send an email explaining the problem
+			//try
+		//	{
 				using (var game = new Game1())
 				{
-					
 					game.Run();
-
 				}
-			}
-			catch (Exception ex)
+	//		}
+		/*	catch (Exception ex)
 			{
 				DialogResult dialogResult = MessageBox.Show(ex.ToString(), "Send email?", MessageBoxButtons.YesNo);
 				if (dialogResult == DialogResult.Yes)
 				{
-					MailMessage mail = new MailMessage("you@yourcompany.com", "user@hotmail.com");
+					MailMessage mail = new MailMessage("Farviewstudio12@gmail.com", "Farviewstudio12@gmail.com");
 					SmtpClient client = new SmtpClient();
-					client.Port = 25;
-					client.DeliveryMethod = SmtpDeliveryMethod.Network;
-					client.UseDefaultCredentials = false;
+					NetworkCredential loginInfo = new NetworkCredential("Farviewstudio12@gmail.com", "hcahoon12"); // password for connection smtp if u dont have have then pass blank
+					client.UseDefaultCredentials = true;
+					client.Credentials = loginInfo;
 					client.Host = "smtp.gmail.com";
-					mail.Subject = "this is a test email.";
-					mail.Body = "this is my test email body";
+					client.EnableSsl = true;
+					mail.Subject = "Crash in Tempt Fate";
+					mail.Body = ex.ToString();
 					client.Send(mail);
 				}
 				else if (dialogResult == DialogResult.No)
 				{
-					//do something else
+					Environment.Exit(0);
 				}
-				
-			}
+			}*/
         }
     }
 #endif
