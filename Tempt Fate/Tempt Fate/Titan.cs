@@ -71,6 +71,7 @@ namespace Tempt_Fate
 				}
 				if (gamepadstate.IsButtonDown(Buttons.X) && canAttack == true)
 				{
+					effect.Play(volume , pitch-.2f , pan);
 					if (enemy.block == true)
 					{
 						blockDamage = 1.8f;

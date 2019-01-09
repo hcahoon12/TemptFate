@@ -15,6 +15,7 @@ namespace Tempt_Fate
 {
 	public class Character
 	{
+		protected SoundEffect effect;
 		public bool canAttack;
 		public bool canWalk;
 		public float mana;
@@ -51,6 +52,10 @@ namespace Tempt_Fate
 		protected List<Buttons> Combos;
 		public int x;
 		public int y;
+		protected float volume = 1.0f;
+		protected float pitch = 0.0f;
+		protected float pan = 0.0f;
+
 		public Character(Rectangle hitbox, double speed, int health , float mana)
 		{
 			//sets a couple of timers for polishing the fighting
@@ -92,6 +97,7 @@ namespace Tempt_Fate
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 			manaTexture = Content.Load<Texture2D>("manaTexture");
+			effect = Content.Load<SoundEffect>("hitting");
 		}
 		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{

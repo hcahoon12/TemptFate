@@ -7,11 +7,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Tempt_Fate
 {
 	public class Screenmanager
 	{
+		private SoundEffect glassSound;
+		private SoundEffect waterSound;
 		List<Buttons> comboOne = new List<Buttons>() { Buttons.A, Buttons.X, Buttons.Y };
 		List<Buttons> Shot = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };
 		public bool tutorialone;
@@ -24,14 +27,18 @@ namespace Tempt_Fate
 		public bool tutorialeight;
 		public bool tutorialdone;
 		public bool continuePlay;
+		public bool music;
+		public bool sfx;
 		public bool exit;
 		public Levels FirstLevel;
 		public Levels titleScreen;
 		public Levels selectScreen;
 		public Levels tutorialScreen;
+		public Levels settingsScreen;
 		public Levels pauseScreen;
 		public bool Play;
 		private bool Tutorial;
+		private bool settings;
 		private bool Quit;
 		public Rectangle LinePosition;
 		public Texture2D LineTexture;
@@ -40,6 +47,7 @@ namespace Tempt_Fate
 		private Gamepadbuttons gamePadButtons;
 		private List<Buttons> Combos;
 
+
 		public Screenmanager()
 		{
 			gamePadButtons = new Gamepadbuttons();
@@ -47,6 +55,7 @@ namespace Tempt_Fate
 			FirstLevel = new Levels();
 			selectScreen = new Levels();
 			tutorialScreen = new Levels();
+			settingsScreen = new Levels();
 			pauseScreen = new Levels();
 			LinePosition = new Rectangle(x, y, 0, 0);
 			titleScreen.Bool = true;
@@ -54,10 +63,25 @@ namespace Tempt_Fate
 			FirstLevel.Bool = false;
 			pauseScreen.Bool = false;
 			Play = true;
+			music = true;
+			sfx = false;
 			Tutorial = false;
+			settings = false;
 			Quit = false;
 			tutorialone = true;
 			Combos = new List<Buttons>();
+		}
+		public void LoadContent(ContentManager Content)
+		{
+			titleScreen.LoadContent(Content, "TitleSreen");
+			FirstLevel.LoadContent(Content, "FirstLevel");
+			selectScreen.LoadContent(Content, "NewSelectScreen");
+			LineTexture = Content.Load<Texture2D>("Arrow");
+			tutorialScreen.LoadContent(Content, "tutoialScreen");
+			settingsScreen.LoadContent(Content, "SettingsScreen");
+			pauseScreen.LoadContent(Content, "pauseScreen");
+			glassSound = Content.Load<SoundEffect>("Glass");
+			waterSound = Content.Load<SoundEffect>("soundscrate-water-drip-single-3");
 		}
 		public void Update(GameTime gameTime)
 		{
@@ -66,6 +90,7 @@ namespace Tempt_Fate
 			selectScreen.Update();
 			pauseScreen.Update();
 			tutorialScreen.Update();
+			settingsScreen.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
 			Buttons? button = gamePadButtons.Update(gst1);
 			//makes sure combos are all set for the tutorial
@@ -81,6 +106,7 @@ namespace Tempt_Fate
 			{
 				if (gst1.IsButtonDown(Buttons.Start))
 				{
+					glassSound.Play();
 					titleScreen.Bool = false;
 					selectScreen.Bool = true;
 				}
@@ -90,30 +116,47 @@ namespace Tempt_Fate
 			{
 				if (button == Buttons.DPadDown && Play == true)
 				{
+					waterSound.Play();
 					Tutorial = true;
 					Play = false;
 				}
 				else if (button == Buttons.DPadDown && Tutorial == true)
 				{
-					Quit = true;
+					waterSound.Play();
+					settings = true;
 					Tutorial = false;
+				}
+				else if (button == Buttons.DPadDown && settings == true)
+				{
+					waterSound.Play();
+					settings = false;
+					Quit = true;
 				}
 				else if (button == Buttons.DPadUp && Tutorial == true)
 				{
+					waterSound.Play();
 					Play = true;
 					Tutorial = false;
 				}
 				else if (button == Buttons.DPadUp && Quit == true)
 				{
-					Tutorial = true;
+					waterSound.Play();
+					settings = true;
 					Quit = false;
+				}
+				else if (button == Buttons.DPadUp && settings == true)
+				{
+					waterSound.Play();
+					settings = false;
+					Tutorial = true;
 				}
 			}
 			if (Play == true)
 			{
-				LinePosition = new Rectangle(50, 100, 100, 100);
+				LinePosition = new Rectangle(200, 115, 50, 50);
 				if (button == Buttons.A)
 				{
+					glassSound.Play();
 					FirstLevel.Bool = true;
 					selectScreen.Bool = false;
 					tutorialScreen.Bool = false;
@@ -121,18 +164,30 @@ namespace Tempt_Fate
 			}
 			else if (Tutorial == true)
 			{
-				LinePosition = new Rectangle(50, 280, 100, 100);
+				LinePosition = new Rectangle(200, 265, 50, 50);
 				if (button == Buttons.A)
 				{
+					glassSound.Play();
 					tutorialScreen.Bool = true;
+					selectScreen.Bool = false;
+				}
+			}
+			else if (settings == true)
+			{
+				LinePosition = new Rectangle(200, 390, 50, 50);
+				if (button == Buttons.A)
+				{
+					glassSound.Play();
+					settingsScreen.Bool = true;
 					selectScreen.Bool = false;
 				}
 			}
 			else if (Quit == true)
 			{
-				LinePosition = new Rectangle(50, 450, 100, 100);
+				LinePosition = new Rectangle(200, 500, 50, 50);
 				if (button == Buttons.A)
 				{
+					glassSound.Play();
 					System.Environment.Exit(0);
 				}
 			}
@@ -221,6 +276,29 @@ namespace Tempt_Fate
 				tutorialone = true;
 				Play = true;
 			}
+			if (settingsScreen.Bool == true)
+			{
+				if (music == true)
+				{
+					LinePosition = new Rectangle(100, 100, 100, 100);
+					if (button == Buttons.DPadDown)
+					{
+						waterSound.Play();
+						sfx = true;
+						music = false;
+					}
+				}
+				else if (sfx == true)
+				{
+					LinePosition = new Rectangle(100, 300, 100, 100);
+					if (button == Buttons.DPadUp)
+					{
+						waterSound.Play();
+						sfx = false;
+						music = true;
+					}
+				}
+			}
 			else if (pauseScreen.Bool == true)
 			{
 				if (gst1.IsButtonDown(Buttons.DPadDown))
@@ -249,21 +327,13 @@ namespace Tempt_Fate
 				LinePosition = new Rectangle(200, 450, 100, 100);
 				if (button == Buttons.A)
 				{
+					glassSound.Play();
 					selectScreen.Bool = true;
 					pauseScreen.Bool = false;
 					exit = false;
 					Play = true;
 				}
 			}
-		}
-		public void LoadContent(ContentManager Content)
-		{
-			titleScreen.LoadContent(Content, "TitleSreen");
-			FirstLevel.LoadContent(Content, "FirstLevel");
-			selectScreen.LoadContent(Content, "SelectScreen");
-			LineTexture = Content.Load<Texture2D>("Arrow");
-			tutorialScreen.LoadContent(Content, "tutoialScreen");
-			pauseScreen.LoadContent(Content, "pauseScreen");
 		}
 		public virtual void Draw(SpriteBatch spritebatch)
 		{

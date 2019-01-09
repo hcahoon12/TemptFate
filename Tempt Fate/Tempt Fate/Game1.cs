@@ -24,9 +24,11 @@ namespace Tempt_Fate
 		Character mystic;
 		List<Line> Lines = new List<Line>();
 		Song song;
+		private Gamepadbuttons gamePadButtons;
 
 		public Game1()
 		{
+			gamePadButtons = new Gamepadbuttons();
 			Screen = new Screenmanager();
 			graphics = new GraphicsDeviceManager(this);
 			graphics.PreferredBackBufferWidth = 960;
@@ -55,7 +57,8 @@ namespace Tempt_Fate
 		protected override void Update(GameTime gameTime)
 		{
 			addLines();
-			GamePadState gst1 = GamePad.GetState(PlayerIndex.One);
+			var gst1 = GamePad.GetState(PlayerIndex.One);
+			Buttons? button = gamePadButtons.Update(gst1);
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
 			//creates and loads in the character while the person is still on the title screen
 			if (Screen.titleScreen.Bool == true)
@@ -79,6 +82,20 @@ namespace Tempt_Fate
 			else if (Screen.pauseScreen.Bool == true)
 			{
 				Screen.Update(gameTime);
+			}
+			else if (Screen.settingsScreen.Bool == true)
+			{
+				if (Screen.music == true)
+				{
+					if (button == Buttons.DPadLeft)
+					{
+						MediaPlayer.Volume = MediaPlayer.Volume - .1f;
+					}
+					if (button == Buttons.DPadRight)
+					{
+						MediaPlayer.Volume = MediaPlayer.Volume +.1f;
+					}
+				}
 			}
 			//once they leave titlescreen players update and can fight
 			else
@@ -154,9 +171,15 @@ namespace Tempt_Fate
 				}
 			}
 			//play game
+			else if (Screen.settingsScreen.Bool == true)
+			{
+				Screen.settingsScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
+				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
+				spriteBatch.DrawString(Fontone, "" + MediaPlayer.Volume, new Vector2(700, 190), Color.White);
+			}
 			else if (Screen.pauseScreen.Bool == true)
 			{
-				Screen.pauseScreen.Draw(spriteBatch, new Rectangle(0 , 0 ,1000, 600));
+				Screen.pauseScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
 				spriteBatch.DrawString(Fontone, "Titan (facing right) " + titan.health, new Vector2(20, 20), Color.Purple);
 				spriteBatch.DrawString(Fontone, "X ", new Vector2(20, 50), Color.White);
@@ -194,9 +217,9 @@ namespace Tempt_Fate
 					{
 						spriteBatch.Draw(titan.manaTexture, titan.manabox, Color.White);
 					}
-						titan.Draw(spriteBatch);
-						spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
-					
+					titan.Draw(spriteBatch);
+					spriteBatch.Draw(titan.healthTexture, titan.healthRectangle, Color.White);
+
 				}
 				if (mystic.health >= 0)
 				{
