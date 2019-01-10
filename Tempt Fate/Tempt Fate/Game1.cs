@@ -46,6 +46,7 @@ namespace Tempt_Fate
 			MediaPlayer.Play(song);
 			MediaPlayer.IsRepeating = false;
 			MediaPlayer.Volume -= .75f;
+			loadVolume();
 			MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 		}
 		//plays the song
@@ -85,21 +86,29 @@ namespace Tempt_Fate
 			}
 			else if (Screen.settingsScreen.Bool == true)
 			{
-				if (Screen.music == true)
+				if (button == Buttons.DPadLeft)
 				{
-					if (button == Buttons.DPadLeft)
-					{
-						MediaPlayer.Volume = MediaPlayer.Volume - .1f;
-					}
-					if (button == Buttons.DPadRight)
-					{
-						MediaPlayer.Volume = MediaPlayer.Volume +.1f;
-					}
+					MediaPlayer.Volume = MediaPlayer.Volume - .05f;
+					saveFile(null);
+				}
+				if (button == Buttons.DPadRight)
+				{
+					MediaPlayer.Volume = MediaPlayer.Volume +.05f;
+
+				}
+				if (button == Buttons.B)
+				{
+					Screen.music = false;
+					Screen.settingsScreen.Bool = false;
+					Screen.Play = true;
+					Screen.selectScreen.Bool = true;
 				}
 			}
 			//once they leave titlescreen players update and can fight
+			
 			else
 			{
+				loadWins();
 				titan.Update(gameTime, Lines, gst1, mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
 				if (gst1.IsButtonDown(Buttons.Start) || gst2.IsButtonDown(Buttons.Start))
@@ -175,7 +184,8 @@ namespace Tempt_Fate
 			{
 				Screen.settingsScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
 				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
-				spriteBatch.DrawString(Fontone, "" + MediaPlayer.Volume, new Vector2(700, 190), Color.White);
+				spriteBatch.DrawString(Fontone, "" + Math.Round(MediaPlayer.Volume*100), new Vector2(700, 325), Color.White);
+				spriteBatch.DrawString(Fontone, "Press 'B' to go back", new Vector2(650, 540), Color.White);
 			}
 			else if (Screen.pauseScreen.Bool == true)
 			{
@@ -241,6 +251,38 @@ namespace Tempt_Fate
 			base.Draw(gameTime);
 		}
 		public int wins;
+		public void loadVolume()
+		{
+			using (StreamReader sr = new StreamReader("Save.txt"))
+			{
+				//set volume
+				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
+			}
+		}
+		//loads both players wins and decides if they have enough to activate special abilities such as more health
+		public void loadWins()
+		{
+			using (StreamReader sr = new StreamReader("Save.txt"))
+			{
+				sr.ReadLine();
+				string[] titanwin=sr.ReadLine().Split(',');
+				string[] mysticwin = sr.ReadLine().Split(',');
+				if (Convert.ToInt32(titanwin[1]) > 5)
+				{
+					if (titan.mana < 500)
+					{
+						titan.mana = 500;
+					}
+				}
+				else if (Convert.ToInt32(mysticwin[1]) > 100)
+				{
+					if (mystic.mana < 500)
+					{
+						mystic.mana = 500;
+					}
+				}
+			}
+		}
 		public void saveFile(string username)
 		{
 			try
@@ -250,6 +292,7 @@ namespace Tempt_Fate
 				using (var stream = File.Create("Save.txt")) { }
 				using (StreamWriter nf = new StreamWriter("Save.txt"))
 				{
+					nf.WriteLine("25");
 					nf.WriteLine("titan,0");
 					nf.WriteLine("mystic,0");
 				}
@@ -259,22 +302,22 @@ namespace Tempt_Fate
 				using (StreamReader sr = new StreamReader("Save.txt"))
 				{
 					string line;
-
-					// Read and display lines from the file until 
-					// the end of the file is reached. 
+						// Read and display lines from the file until 
+						// the end of the file is reached. 
+						sr.ReadLine();
+						nf.WriteLine(Math.Round((MediaPlayer.Volume*100)));
 					while ((line = sr.ReadLine()) != null)
 					{
 						string[] lineArray = line.Split(',');
 						if (lineArray[0].Equals(username))
 						{
 							wins = Convert.ToInt32(lineArray[1]) + 1;
-							string lineToWrite = username + "," + wins;
+								string lineToWrite = username + "," + wins;
 							nf.WriteLine(lineToWrite);
 						}
 						else
 						{
 							nf.WriteLine(line);
-							
 						}
 					}
 				}

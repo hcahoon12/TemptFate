@@ -28,7 +28,6 @@ namespace Tempt_Fate
 		public bool tutorialdone;
 		public bool continuePlay;
 		public bool music;
-		public bool sfx;
 		public bool exit;
 		public Levels FirstLevel;
 		public Levels titleScreen;
@@ -63,8 +62,6 @@ namespace Tempt_Fate
 			FirstLevel.Bool = false;
 			pauseScreen.Bool = false;
 			Play = true;
-			music = true;
-			sfx = false;
 			Tutorial = false;
 			settings = false;
 			Quit = false;
@@ -78,7 +75,7 @@ namespace Tempt_Fate
 			selectScreen.LoadContent(Content, "NewSelectScreen");
 			LineTexture = Content.Load<Texture2D>("Arrow");
 			tutorialScreen.LoadContent(Content, "tutoialScreen");
-			settingsScreen.LoadContent(Content, "SettingsScreen");
+			settingsScreen.LoadContent(Content, "SettingScreen2");
 			pauseScreen.LoadContent(Content, "pauseScreen");
 			glassSound = Content.Load<SoundEffect>("Glass");
 			waterSound = Content.Load<SoundEffect>("soundscrate-water-drip-single-3");
@@ -180,7 +177,12 @@ namespace Tempt_Fate
 					glassSound.Play();
 					settingsScreen.Bool = true;
 					selectScreen.Bool = false;
+					music = true;
 				}
+			}
+			if (music == true)
+			{
+				LinePosition = new Rectangle(200, 220, 100, 100);
 			}
 			else if (Quit == true)
 			{
@@ -275,29 +277,6 @@ namespace Tempt_Fate
 				tutorialdone = false;
 				tutorialone = true;
 				Play = true;
-			}
-			if (settingsScreen.Bool == true)
-			{
-				if (music == true)
-				{
-					LinePosition = new Rectangle(100, 100, 100, 100);
-					if (button == Buttons.DPadDown)
-					{
-						waterSound.Play();
-						sfx = true;
-						music = false;
-					}
-				}
-				else if (sfx == true)
-				{
-					LinePosition = new Rectangle(100, 300, 100, 100);
-					if (button == Buttons.DPadUp)
-					{
-						waterSound.Play();
-						sfx = false;
-						music = true;
-					}
-				}
 			}
 			else if (pauseScreen.Bool == true)
 			{
