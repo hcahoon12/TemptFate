@@ -188,18 +188,6 @@
 /processorParam:TextureFormat=Color
 /build:mysticwalkleft.png
 
-#begin SelectScreen.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SelectScreen.png
-
 #begin Arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -290,18 +278,6 @@
 /processorParam:Quality=Best
 /build:Glass.mp3
 
-#begin NewSelectScreen.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:NewSelectScreen.png
-
 #begin SettingScreen2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -313,4 +289,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SettingScreen2.png
+
+#begin SelectScreen2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SelectScreen2.png
+
+#begin SettingScreen3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SettingScreen3.png
 

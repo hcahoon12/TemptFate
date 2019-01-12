@@ -73,10 +73,10 @@ namespace Tempt_Fate
 		{
 			titleScreen.LoadContent(Content, "TitleSreen");
 			FirstLevel.LoadContent(Content, "FirstLevel");
-			selectScreen.LoadContent(Content, "NewSelectScreen");
+			selectScreen.LoadContent(Content, "SelectScreen2");
 			LineTexture = Content.Load<Texture2D>("Arrow");
 			tutorialScreen.LoadContent(Content, "tutoialScreen");
-			settingsScreen.LoadContent(Content, "SettingScreen2");
+			settingsScreen.LoadContent(Content, "SettingScreen3");
 			pauseScreen.LoadContent(Content, "pauseScreen");
 			glassSound = Content.Load<SoundEffect>("Glass");
 			waterSound = Content.Load<SoundEffect>("soundscrate-water-drip-single-3");
@@ -151,7 +151,7 @@ namespace Tempt_Fate
 			}
 			if (Play == true)
 			{
-				LinePosition = new Rectangle(200, 115, 50, 50);
+				LinePosition = new Rectangle(250, 70, 50, 50);
 				if (button == Buttons.A)
 				{
 					glassSound.Play();
@@ -162,7 +162,7 @@ namespace Tempt_Fate
 			}
 			else if (Tutorial == true)
 			{
-				LinePosition = new Rectangle(200, 265, 50, 50);
+				LinePosition = new Rectangle(250, 205, 50, 50);
 				if (button == Buttons.A)
 				{
 					glassSound.Play();
@@ -172,7 +172,7 @@ namespace Tempt_Fate
 			}
 			else if (settings == true)
 			{
-				LinePosition = new Rectangle(200, 390, 50, 50);
+				LinePosition = new Rectangle(250, 330, 50, 50);
 				if (button == Buttons.A)
 				{
 					glassSound.Play();
@@ -181,18 +181,18 @@ namespace Tempt_Fate
 					music = true;
 				}
 			}
-			if (music == true)
-			{
-				LinePosition = new Rectangle(200, 220, 100, 100);
-			}
 			else if (Quit == true)
 			{
-				LinePosition = new Rectangle(200, 500, 50, 50);
+				LinePosition = new Rectangle(250, 470, 50, 50);
 				if (button == Buttons.A)
 				{
 					glassSound.Play();
 					System.Environment.Exit(0);
 				}
+			}
+			if (music == true)
+			{
+				LinePosition = new Rectangle(200, 220, 100, 100);
 			}
 			//goes to tutorial and runs through diffrent types of things player needs to know
 			if (tutorialScreen.Bool == true)
@@ -258,7 +258,11 @@ namespace Tempt_Fate
 						}
 					}
 					catch (ArgumentOutOfRangeException ex)
-					{ }
+					{
+						var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate");
+						errorfile.Close();
+						File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate", ex.Message);
+					}
 				}
 				else if (tutorialseven == true)
 				{

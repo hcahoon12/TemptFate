@@ -253,16 +253,16 @@ namespace Tempt_Fate
 		//loads music that the player recently saved 
 		public void loadVolume()
 		{
-			using (StreamReader sr = new StreamReader("Save.txt"))
+			/*using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				//set volume
 				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
-			}
+			}*/
 		}
 		//loads both players wins and decides if they have enough to activate special abilities such as more health
 		public void loadWins()
 		{
-			using (StreamReader sr = new StreamReader("Save.txt"))
+			/*using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				sr.ReadLine();
 				string[] titanwin=sr.ReadLine().Split(',');
@@ -281,14 +281,13 @@ namespace Tempt_Fate
 						mystic.mana = 500;
 					}
 				}
-			}
+			}*/
 		}
 		//saves the volume, and which character has won for later use
 		public void saveFile(string username)
 		{
 			try
 			{
-				
 			if (!File.Exists("Save.txt"))
 			{
 				using (var stream = File.Create("Save.txt")) { }
@@ -324,10 +323,9 @@ namespace Tempt_Fate
 					}
 				}
 			}
-			//File.Replace("saveFile.temp", "Save.txt", null);
+			File.Replace("saveFile.temp", "Save.txt", null);
 			File.Delete("Save.txt");
 			File.Move("saveFile.temp", "Save.txt");
-				throw new Exception();
 			}
 			catch (Exception e)
 			{

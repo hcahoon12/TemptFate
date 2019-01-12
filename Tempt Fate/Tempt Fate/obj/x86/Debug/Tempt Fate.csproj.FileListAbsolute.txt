@@ -92,5 +92,6 @@ C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\sound
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\soundscrate-water-drip-single-3.wma
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\soundscrate-water-drip-single-3.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Glass.xnb
-C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\NewSelectScreen.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SettingScreen2.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SelectScreen2.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\SettingScreen3.xnb
