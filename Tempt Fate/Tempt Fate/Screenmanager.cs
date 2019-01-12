@@ -77,7 +77,7 @@ namespace Tempt_Fate
 			LineTexture = Content.Load<Texture2D>("Arrow");
 			tutorialScreen.LoadContent(Content, "tutoialScreen");
 			settingsScreen.LoadContent(Content, "SettingScreen3");
-			pauseScreen.LoadContent(Content, "pauseScreen");
+			pauseScreen.LoadContent(Content, "pauseScreen2");
 			glassSound = Content.Load<SoundEffect>("Glass");
 			waterSound = Content.Load<SoundEffect>("soundscrate-water-drip-single-3");
 		}
