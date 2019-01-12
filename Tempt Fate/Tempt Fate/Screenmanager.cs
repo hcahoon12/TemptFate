@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using System.IO;
 
 namespace Tempt_Fate
 {
@@ -239,7 +240,12 @@ namespace Tempt_Fate
 						}
 					}
 					catch (ArgumentOutOfRangeException ex)
-					{ }
+					{
+						//logging system errors
+						var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate");
+						errorfile.Close();
+						File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate", ex.Message);
+					}
 				}
 				else if (tutorialsix == true)
 				{

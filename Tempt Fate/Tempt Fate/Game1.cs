@@ -94,7 +94,6 @@ namespace Tempt_Fate
 				if (button == Buttons.DPadRight)
 				{
 					MediaPlayer.Volume = MediaPlayer.Volume +.05f;
-
 				}
 				if (button == Buttons.B)
 				{
@@ -251,6 +250,7 @@ namespace Tempt_Fate
 			base.Draw(gameTime);
 		}
 		public int wins;
+		//loads music that the player recently saved 
 		public void loadVolume()
 		{
 			using (StreamReader sr = new StreamReader("Save.txt"))
@@ -267,7 +267,7 @@ namespace Tempt_Fate
 				sr.ReadLine();
 				string[] titanwin=sr.ReadLine().Split(',');
 				string[] mysticwin = sr.ReadLine().Split(',');
-				if (Convert.ToInt32(titanwin[1]) > 5)
+				if (Convert.ToInt32(titanwin[1]) > 100)
 				{
 					if (titan.mana < 500)
 					{
@@ -283,22 +283,24 @@ namespace Tempt_Fate
 				}
 			}
 		}
+		//saves the volume, and which character has won for later use
 		public void saveFile(string username)
 		{
 			try
 			{
+				
 			if (!File.Exists("Save.txt"))
 			{
 				using (var stream = File.Create("Save.txt")) { }
 				using (StreamWriter nf = new StreamWriter("Save.txt"))
 				{
 					nf.WriteLine("25");
-					nf.WriteLine("titan,0");
-					nf.WriteLine("mystic,0");
+					nf.WriteLine("titan , 0");
+					nf.WriteLine("mystic , 0");
 				}
 			}
 			using (StreamWriter nf = new StreamWriter("saveFile.temp"))
-				{
+			{
 				using (StreamReader sr = new StreamReader("Save.txt"))
 				{
 					string line;
@@ -325,9 +327,14 @@ namespace Tempt_Fate
 			//File.Replace("saveFile.temp", "Save.txt", null);
 			File.Delete("Save.txt");
 			File.Move("saveFile.temp", "Save.txt");
-		}
+				throw new Exception();
+			}
 			catch (Exception e)
 			{
+				//create a file that logs system errors
+				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate");
+				errorfile.Close();
+				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate", e.Message);
 				//delete savefile.temp if it exists
 				File.Delete("saveFile.temp");
 				// Let the user know what went wrong.

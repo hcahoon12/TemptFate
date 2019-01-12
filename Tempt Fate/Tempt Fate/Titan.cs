@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
-
+using System.IO;
 
 namespace Tempt_Fate
 {
@@ -263,7 +263,14 @@ namespace Tempt_Fate
 					canWalk = true;
 				}
 			}
-			catch (ArgumentOutOfRangeException ex) {}
+			catch (ArgumentOutOfRangeException ex)
+			{
+				//logs sytem errors to text file
+				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate");
+				errorfile.Close();
+				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate", ex.Message);
+				
+			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
 				{
