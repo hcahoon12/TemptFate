@@ -14,6 +14,7 @@ namespace Tempt_Fate
 {
 	public class Mystic : Character
 	{
+		string line;
 		//creates list of buttons that is are attacks
 		List<Buttons> comboOne = new List<Buttons>() { Buttons.A, Buttons.X, Buttons.Y };//y x a
 		List<Buttons> comboTwo = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.A };//a a y
@@ -247,6 +248,13 @@ namespace Tempt_Fate
 					}
 				}
 			base.Update(gameTime, Lines, gamepadstate, enemy);
+			//make a text file to check varaibeles 
+			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\Debugging_VariablesMystic")) { }
+			using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\Debugging_VariablesMystic"))
+			{
+				nf.WriteLine("can attack , block , can shoot , can walk , health , mana");
+			}
+			string lineToWrite = canAttack + "," + block + "," + canshoot + "," + canWalk + "," + health + "," + mana;
 		}
 		
 	}

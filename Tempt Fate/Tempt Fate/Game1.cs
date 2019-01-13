@@ -14,6 +14,7 @@ namespace Tempt_Fate
 {
 	public class Game1 : Game
 	{
+		//load wins and volume are commented out, having problems with the save file but probably due to something with conent, check github
 		//fix attack box being on screen to long, add timer
 		//fix animation for combos and blocking, wont rotate through frames
 		GraphicsDeviceManager graphics;
@@ -31,9 +32,10 @@ namespace Tempt_Fate
 			gamePadButtons = new Gamepadbuttons();
 			Screen = new Screenmanager();
 			graphics = new GraphicsDeviceManager(this);
-			graphics.PreferredBackBufferWidth = 960;
 			graphics.PreferredBackBufferHeight = 600;
+			graphics.PreferredBackBufferWidth = 960;
 			graphics.IsFullScreen = false;
+			
 			Content.RootDirectory = "Content";
 		}
 		protected override void LoadContent()
@@ -57,10 +59,10 @@ namespace Tempt_Fate
 
 		protected override void Update(GameTime gameTime)
 		{
-			addLines();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
 			Buttons? button = gamePadButtons.Update(gst1);
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
+			addLines();
 			//creates and loads in the character while the person is still on the title screen
 			if (Screen.titleScreen.Bool == true)
 			{
@@ -104,7 +106,6 @@ namespace Tempt_Fate
 				}
 			}
 			//once they leave titlescreen players update and can fight
-			
 			else
 			{
 				loadWins();
@@ -178,7 +179,6 @@ namespace Tempt_Fate
 					spriteBatch.DrawString(Fontone, "dont worry RT blocks", new Vector2(50, 150), Color.Black);
 				}
 			}
-			//play game
 			else if (Screen.settingsScreen.Bool == true)
 			{
 				Screen.settingsScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
@@ -207,6 +207,7 @@ namespace Tempt_Fate
 				spriteBatch.DrawString(Fontone, "X - Y - X ", new Vector2(650, 200), Color.White);
 				spriteBatch.DrawString(Fontone, "Down - Left - X ", new Vector2(650, 230), Color.White);
 			}
+			//play game
 			else
 			{
 				foreach (Line Lines in Lines)
@@ -253,16 +254,16 @@ namespace Tempt_Fate
 		//loads music that the player recently saved 
 		public void loadVolume()
 		{
-			using (StreamReader sr = new StreamReader("Save.txt"))
+			/*using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				//set volume
 				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
-			}
+			}*/
 		}
 		//loads both players wins and decides if they have enough to activate special abilities such as more health
 		public void loadWins()
 		{
-			using (StreamReader sr = new StreamReader("Save.txt"))
+		/*	using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				sr.ReadLine();
 				string[] titanwin=sr.ReadLine().Split(',');
@@ -281,7 +282,7 @@ namespace Tempt_Fate
 						mystic.mana = 500;
 					}
 				}
-			}
+			}*/
 		}
 		//saves the volume, and which character has won for later use
 		public void saveFile(string username)
