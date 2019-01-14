@@ -26,7 +26,7 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "baseWalkRight", "baseWalkLeft", "baseWalkRight", "baseWalkLeft", "baseWalkLeft");
+			base.LoadContent(Content, "base_walk_edt_mid", "baseWalkLeft", "jumpingedt", "baseWalkLeft", "base_walk_edt_mid");
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
