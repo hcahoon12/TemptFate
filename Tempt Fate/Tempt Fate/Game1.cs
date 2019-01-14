@@ -14,7 +14,6 @@ namespace Tempt_Fate
 {
 	public class Game1 : Game
 	{
-		//load wins and volume are commented out, having problems with the save file but probably due to something with conent, check github
 		//fix attack box being on screen to long, add timer
 		//fix animation for combos and blocking, wont rotate through frames
 		GraphicsDeviceManager graphics;
@@ -219,7 +218,7 @@ namespace Tempt_Fate
 				{
 					if (mystic.health <= 0)
 					{
-						saveFile("titan");
+						saveFile("titan ");
 						Screen.titleScreen.Bool = true;
 						Screen.Play = true;
 					}
@@ -235,7 +234,7 @@ namespace Tempt_Fate
 				{
 					if (titan.health <= 0)
 					{
-						saveFile("mystic");
+						saveFile("mystic ");
 						Screen.titleScreen.Bool = true;
 						Screen.Play = true;
 					}
@@ -254,16 +253,18 @@ namespace Tempt_Fate
 		//loads music that the player recently saved 
 		public void loadVolume()
 		{
-			/*using (StreamReader sr = new StreamReader("Save.txt"))
+			createFile();
+			using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				//set volume
 				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
-			}*/
+			}
 		}
 		//loads both players wins and decides if they have enough to activate special abilities such as more health
 		public void loadWins()
 		{
-		/*	using (StreamReader sr = new StreamReader("Save.txt"))
+			createFile();
+			using (StreamReader sr = new StreamReader("Save.txt"))
 			{
 				sr.ReadLine();
 				string[] titanwin=sr.ReadLine().Split(',');
@@ -282,39 +283,30 @@ namespace Tempt_Fate
 						mystic.mana = 500;
 					}
 				}
-			}*/
+			}
 		}
 		//saves the volume, and which character has won for later use
 		public void saveFile(string username)
 		{
 			try
 			{
-			if (!File.Exists("Save.txt"))
-			{
-				using (var stream = File.Create("Save.txt")) { }
-				using (StreamWriter nf = new StreamWriter("Save.txt"))
-				{
-					nf.WriteLine("25");
-					nf.WriteLine("titan , 0");
-					nf.WriteLine("mystic , 0");
-				}
-			}
-			using (StreamWriter nf = new StreamWriter("saveFile.temp"))
+				createFile();
+				using (StreamWriter nf = new StreamWriter("saveFile.temp"))
 			{
 				using (StreamReader sr = new StreamReader("Save.txt"))
 				{
 					string line;
-						// Read and display lines from the file until 
-						// the end of the file is reached. 
-						sr.ReadLine();
-						nf.WriteLine(Math.Round((MediaPlayer.Volume*100)));
+					// Read and display lines from the file until 
+					// the end of the file is reached. 
+					sr.ReadLine();
+					nf.WriteLine(Math.Round((MediaPlayer.Volume*100)));
 					while ((line = sr.ReadLine()) != null)
 					{
 						string[] lineArray = line.Split(',');
 						if (lineArray[0].Equals(username))
 						{
 							wins = Convert.ToInt32(lineArray[1]) + 1;
-								string lineToWrite = username + "," + wins;
+							string lineToWrite = username + ", " + wins;
 							nf.WriteLine(lineToWrite);
 						}
 						else
@@ -324,7 +316,7 @@ namespace Tempt_Fate
 					}
 				}
 			}
-			File.Replace("saveFile.temp", "Save.txt", null);
+			//File.Replace("saveFile.temp", "Save.txt", null);
 			File.Delete("Save.txt");
 			File.Move("saveFile.temp", "Save.txt");
 			}
@@ -339,6 +331,19 @@ namespace Tempt_Fate
 				// Let the user know what went wrong.
 				Console.WriteLine("The file could not be read:");
 				Console.WriteLine(e.Message);
+			}
+		}
+		public void createFile()
+		{
+			if (!File.Exists("Save.txt"))
+			{
+				using (var stream = File.Create("Save.txt")) { }
+				using (StreamWriter nf = new StreamWriter("Save.txt"))
+				{
+					nf.WriteLine("25");
+					nf.WriteLine("titan , 0");
+					nf.WriteLine("mystic , 0");
+				}
 			}
 		}
 		//creates line
