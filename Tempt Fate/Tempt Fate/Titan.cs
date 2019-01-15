@@ -20,19 +20,23 @@ namespace Tempt_Fate
 		List<Buttons> comboThree = new List<Buttons>() { Buttons.Y, Buttons.A, Buttons.Y }; // y a y
 		List<Buttons> specialShotLeft = new List<Buttons>() { Buttons.X, Buttons.DPadLeft, Buttons.DPadDown };//down left X
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
+		private Texture2D basePunchRight;
+		private Texture2D basePunchLeft;
+		
 		public Titan(int x,int y):base(new Rectangle(x, y, 100, 100), 6.6, 500, 500)
 		{
 			facingRight = true;
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "base_walk_edt_mid", "baseWalkLeft", "jumpingedt", "baseWalkLeft", "base_walk_edt_mid");
+			basePunchRight = Content.Load<Texture2D>("basePunch");
+			basePunchLeft = Content.Load<Texture2D>("basePunch (2)");
+			base.LoadContent(Content, "base_walk_edt_mid", "base_walk_edt_mid (2)", "jumpingedt", "jumpingedt (2)", "base_walk_edt_mid (2)", "base_walk_edt_mid");
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
 			//makes sure modifyAttackBox cannot do damage yet
 			modifyAttackBox(-300, 500, 20, 100);
-			//mana
 			if (gamepadstate.IsButtonDown(Buttons.B) && mana < 500)
 			{
 				mana += 2f;
@@ -85,13 +89,17 @@ namespace Tempt_Fate
 					else { damage = 0; }
 					if (facingRight == true)
 					{
-					modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-				//	attackDelay.Stop();
-					//attackDelay.Start();
+						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+						animation.SetTexture(basePunchRight, 0);
+						animation.movetexture();
+						//	attackDelay.Stop();
+						//attackDelay.Start();
 					}
 					else
 					{
 						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+						animation.SetTexture(basePunchLeft, 0);
+						animation.movetexture();
 					}
 					SomeKeyPressed = true;
 				}

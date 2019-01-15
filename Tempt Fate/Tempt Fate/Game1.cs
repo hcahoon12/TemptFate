@@ -316,7 +316,6 @@ namespace Tempt_Fate
 					}
 				}
 			}
-			//File.Replace("saveFile.temp", "Save.txt", null);
 			File.Delete("Save.txt");
 			File.Move("saveFile.temp", "Save.txt");
 			}
@@ -333,6 +332,7 @@ namespace Tempt_Fate
 				Console.WriteLine(e.Message);
 			}
 		}
+		//checking to see if save file is made yet and if it is then nothing happens if not it creates it
 		public void createFile()
 		{
 			if (!File.Exists("Save.txt"))

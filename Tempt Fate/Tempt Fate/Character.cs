@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using System.Timers;
 
-
 namespace Tempt_Fate
 {
 	public class Character
@@ -38,6 +37,7 @@ namespace Tempt_Fate
 		protected int Direction;
 		private Texture2D LeftWalk;
 		private Texture2D JumpAnimation;
+		private Texture2D JumpLeft;
 		public Rectangle hitbox;
 		public Texture2D healthTexture;
 		public Texture2D healthTexture2;
@@ -85,12 +85,13 @@ namespace Tempt_Fate
 		}
 		public virtual void LoadContent(ContentManager Content)
 		{ }
-		public void LoadContent(ContentManager Content, string rightTexture, string leftTexture, string jumpAnimation, string shottexture, string hittexture)
+		public void LoadContent(ContentManager Content, string rightTexture, string leftTexture, string jumpAnimation, string JumpLeftAnimation, string shottexture, string hittexture)
 		{
 			//gives textures a variable so when the character is created they can change the animations
 			hitTexture = Content.Load<Texture2D>(hittexture);
 			RightWalk = Content.Load<Texture2D>(rightTexture);
 			JumpAnimation = Content.Load<Texture2D>(jumpAnimation);
+			JumpLeft = Content.Load<Texture2D>(JumpLeftAnimation);
 			LeftWalk = Content.Load<Texture2D>(leftTexture);
 			animation = new Animation(RightWalk, 4, 1, hitbox);
 			Shottexture = Content.Load<Texture2D>(shottexture);
@@ -142,19 +143,25 @@ namespace Tempt_Fate
 				Jumped = false;
 			}
 			SomeKeyPressed = false;
-			//if up is pressed on the gamepad the character can jump
 			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false && canWalk == true)
 			{
 				animation.Update(gameTime, hitbox);
-				animation.SetTexture(JumpAnimation, 0);
-				animation.movetexture();
+				if (facingRight == true)
+				{
+					animation.SetTexture(JumpAnimation, 0);
+					animation.movetexture();
+				}
+				else
+				{
+					animation.SetTexture(JumpLeft, 0);
+					animation.movetexture();
+				}
 				velocity.Y -= 19;
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
 			if (gamepadstate.IsButtonDown(Buttons.DPadRight) && canWalk == true)
 			{
-				// detirmines if hes facing right for attack moves
 				facingRight = true;
 				facingLeft = false;
 				Direction = 1;

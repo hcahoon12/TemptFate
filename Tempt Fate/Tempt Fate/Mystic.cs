@@ -27,7 +27,7 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			base.LoadContent(Content, "mysticwalkright", "mysticwalkleft", "jumpingedt", "Knife","mysticwalkleft");
+			base.LoadContent(Content, "baseRightWalkMystic", "baseWalkLeftMystic", "JumpingMystic", "jumpingMystic (2)", "Knife", "baseWalkLeftMystic");
 		}
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
