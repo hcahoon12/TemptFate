@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using System.Timers;
+using System.IO;
 
 namespace Tempt_Fate
 {
@@ -189,11 +190,29 @@ namespace Tempt_Fate
 			//if no button is being pressed reset animation
 			if (SomeKeyPressed == false)
 			{
-				animation.ResetFrames();
+				if (facingRight == true)
+				{
+					animation.ResetFrames(RightWalk);
+				}
+				else
+				{
+					animation.ResetFrames(LeftWalk);
+				}
 			}
 			animation.Update(gameTime, hitbox);
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
+			//make a text file to check varaibeles 
+			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter")) { }
+			using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter"))
+			{
+				nf.WriteLine("can attack = " + canAttack);
+				nf.WriteLine("block = " + block);
+				nf.WriteLine("can shoot = " + canshoot);
+				nf.WriteLine("can walk = " + canWalk);
+				nf.WriteLine("health = " + health);
+				nf.WriteLine("mana = " + mana);
+			}
 		}
 		//makes enemies health minus the damage given
 		public void TakeDamage(int damage)

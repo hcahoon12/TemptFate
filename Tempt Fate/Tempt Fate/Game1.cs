@@ -254,7 +254,7 @@ namespace Tempt_Fate
 		public void loadVolume()
 		{
 			createFile();
-			using (StreamReader sr = new StreamReader("Save.txt"))
+			using (StreamReader sr = new StreamReader("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 			{
 				//set volume
 				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
@@ -264,7 +264,7 @@ namespace Tempt_Fate
 		public void loadWins()
 		{
 			createFile();
-			using (StreamReader sr = new StreamReader("Save.txt"))
+			using (StreamReader sr = new StreamReader("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 			{
 				sr.ReadLine();
 				string[] titanwin=sr.ReadLine().Split(',');
@@ -293,7 +293,7 @@ namespace Tempt_Fate
 				createFile();
 				using (StreamWriter nf = new StreamWriter("saveFile.temp"))
 			{
-				using (StreamReader sr = new StreamReader("Save.txt"))
+				using (StreamReader sr = new StreamReader("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 				{
 					string line;
 					// Read and display lines from the file until 
@@ -316,8 +316,8 @@ namespace Tempt_Fate
 					}
 				}
 			}
-			File.Delete("Save.txt");
-			File.Move("saveFile.temp", "Save.txt");
+			File.Delete("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt");
+			File.Move("saveFile.temp", "C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt");
 			}
 			catch (Exception e)
 			{
@@ -335,10 +335,10 @@ namespace Tempt_Fate
 		//checking to see if save file is made yet and if it is then nothing happens if not it creates it
 		public void createFile()
 		{
-			if (!File.Exists("Save.txt"))
+			if (!File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 			{
-				using (var stream = File.Create("Save.txt")) { }
-				using (StreamWriter nf = new StreamWriter("Save.txt"))
+				using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt")) { }
+				using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 				{
 					nf.WriteLine("25");
 					nf.WriteLine("titan , 0");

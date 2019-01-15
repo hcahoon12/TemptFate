@@ -274,10 +274,9 @@ namespace Tempt_Fate
 			catch (ArgumentOutOfRangeException ex)
 			{
 				//logs sytem errors to text file
-				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate");
+				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate");
 				errorfile.Close();
-				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Tempt Fate\\bin\\Windows\\x86\\Debug\\errorTemptFate", ex.Message);
-				
+				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate", ex.Message);
 			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
@@ -297,6 +296,17 @@ namespace Tempt_Fate
 				}
 			animation.Update(gameTime, hitbox);
 			base.Update(gameTime, Lines, gamepadstate, enemy);
+			//make a text file to check varaibeles 
+			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesTitan")) { }
+			using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesTitan"))
+			{
+				nf.WriteLine("can attack = " + canAttack);
+				nf.WriteLine("block = " + block);
+				nf.WriteLine("can shoot = " + canshoot);
+				nf.WriteLine("can walk = " + canWalk);
+				nf.WriteLine("health = " + health);
+				nf.WriteLine("mana = " + mana);
+			}
 		}
 	}
 }

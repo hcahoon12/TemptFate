@@ -46,7 +46,7 @@ namespace Tempt_Fate
 			rowindex = row;
 		}
 		//this is called in character class when buttons are not pressed the picture will reset back to the first frame
- 		public void ResetFrames()
+ 		public void ResetFrames(Texture2D resetFrameTexture)
 		{
 			colsindex = 0;
 			movetexture();
