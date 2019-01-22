@@ -30,6 +30,18 @@ namespace Tempt_Fate
 		bool oldDown;
 		bool oldStart;
 		bool oldUp;
+		Keys Up;
+		Keys right;
+		Keys left;
+		Keys down;
+		Keys start;
+		Keys a;
+		Keys x;
+		Keys y;
+		Keys righttrigger;
+		Keys b;
+
+
 		public Gamepadbuttons()
 		{
 			oldA = false;
@@ -42,24 +54,44 @@ namespace Tempt_Fate
 			oldStart = false;
 			oldUp = false;
 		}
-		public Buttons? Update(GamePadState gamepadstate) //returns button if button that was just pressed 
+
+		//All the keyboard stuff was added for testing in case you didnt have a controller 
+
+		private void setKeys(int playerNum)
+		{
+			if (playerNum == 1)
+			{
+				Up = Keys.W;
+				start = Keys.Space;
+				right = Keys.D;
+				left = Keys.A;
+				down = Keys.S;
+				a = Keys.C;
+				x = Keys.V;
+				y = Keys.B;
+				b = Keys.N;
+			}
+		}
+		public Buttons? Update(GamePadState gamepadstate, int playerNum) //returns button if button that was just pressed 
 		{
 			Buttons? returnVal = null;
-			newStart = gamepadstate.IsButtonDown(Buttons.Start);
-			newA = gamepadstate.IsButtonDown(Buttons.A);
-			newB = gamepadstate.IsButtonDown(Buttons.B);
-			newX = gamepadstate.IsButtonDown(Buttons.X);
-			newY = gamepadstate.IsButtonDown(Buttons.Y);
-			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft);
-			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight);
-			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown);
-			newUp = gamepadstate.IsButtonDown(Buttons.DPadUp);
+			setKeys(playerNum);
+			KeyboardState kbstate = Keyboard.GetState();
+			newStart = gamepadstate.IsButtonDown(Buttons.Start) || kbstate.IsKeyDown(start);
+			newA = gamepadstate.IsButtonDown(Buttons.A) || kbstate.IsKeyDown(a);
+			newB = gamepadstate.IsButtonDown(Buttons.B) || kbstate.IsKeyDown(b);
+			newX = gamepadstate.IsButtonDown(Buttons.X) || kbstate.IsKeyDown(x);
+			newY = gamepadstate.IsButtonDown(Buttons.Y) || kbstate.IsKeyDown(y);
+			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft) || kbstate.IsKeyDown(left);
+			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight) || kbstate.IsKeyDown(right);
+			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown) || kbstate.IsKeyDown(down);
+			newUp = gamepadstate.IsButtonDown(Buttons.DPadUp) || kbstate.IsKeyDown(Up);
 			//return buttons so combos can equal true
 			if (newA == true && oldA == false)
 			{
 				returnVal = Buttons.A;
 			}
-			else if (newStart == true && newStart == false)
+			else if (newStart == true && oldStart == false)
 			{
 				returnVal = Buttons.Start;
 			}

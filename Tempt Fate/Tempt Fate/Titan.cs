@@ -26,6 +26,7 @@ namespace Tempt_Fate
 		public Titan(int x,int y):base(new Rectangle(x, y, 100, 100), 6.6, 500, 500)
 		{
 			facingRight = true;
+			playerNum = 1;
 		}
 		public override void LoadContent(ContentManager Content)
 		{
@@ -92,7 +93,7 @@ namespace Tempt_Fate
 						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 						animation.SetTexture(basePunchRight, 0);
 						animation.movetexture();
-						//	attackDelay.Stop();
+						//attackDelay.Stop();
 						//attackDelay.Start();
 					}
 					else
@@ -274,9 +275,9 @@ namespace Tempt_Fate
 			catch (ArgumentOutOfRangeException ex)
 			{
 				//logs sytem errors to text file
-				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate");
+				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateTitan");
 				errorfile.Close();
-				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate", ex.Message);
+				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateTitan", ex.Message);
 			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
@@ -302,6 +303,8 @@ namespace Tempt_Fate
 			{
 				nf.WriteLine("can attack = " + canAttack);
 				nf.WriteLine("block = " + block);
+				nf.WriteLine("facing left = " + facingLeft);
+				nf.WriteLine("facing right = " + facingRight);
 				nf.WriteLine("can shoot = " + canshoot);
 				nf.WriteLine("can walk = " + canWalk);
 				nf.WriteLine("health = " + health);

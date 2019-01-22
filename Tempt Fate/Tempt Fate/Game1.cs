@@ -49,19 +49,18 @@ namespace Tempt_Fate
 			MediaPlayer.Volume -= .75f;
 			loadVolume();
 			MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
+			addLines();
 		}
 		//plays the song
 		private void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
 		{
 			MediaPlayer.Play(song);
 		}
-
 		protected override void Update(GameTime gameTime)
 		{
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			Buttons? button = gamePadButtons.Update(gst1);
+			Buttons? button = gamePadButtons.Update(gst1 , 1);
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
-			addLines();
 			//creates and loads in the character while the person is still on the title screen
 			if (Screen.titleScreen.Bool == true)
 			{

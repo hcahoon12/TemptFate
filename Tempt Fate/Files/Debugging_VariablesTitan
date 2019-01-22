@@ -1,6 +1,8 @@
 can attack = True
 block = False
+facing left = False
+facing right = True
 can shoot = True
 can walk = True
 health = 500
-mana = 501
+mana = 500

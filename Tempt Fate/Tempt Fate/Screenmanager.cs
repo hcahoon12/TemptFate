@@ -90,7 +90,7 @@ namespace Tempt_Fate
 			tutorialScreen.Update();
 			settingsScreen.Update();
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			Buttons? button = gamePadButtons.Update(gst1);
+			Buttons? button = gamePadButtons.Update(gst1 , 1);
 			//makes sure combos are all set for the tutorial
 			if (button != null)
 			{
@@ -102,7 +102,7 @@ namespace Tempt_Fate
 			}
 			if (titleScreen.Bool == true)
 			{
-				if (gst1.IsButtonDown(Buttons.Start))
+				if (button == Buttons.Start)
 				{
 					glassSound.Play();
 					titleScreen.Bool = false;
@@ -199,7 +199,7 @@ namespace Tempt_Fate
 			{
 				if (tutorialone == true)
 				{
-					if (gst1.IsButtonDown(Buttons.DPadRight) || gst1.IsButtonDown(Buttons.LeftThumbstickRight))
+					if (gst1.IsButtonDown(Buttons.DPadRight))
 					{
 						tutorialone = false;
 						tutorialtwo = true;
@@ -207,7 +207,7 @@ namespace Tempt_Fate
 				}
 				else if (tutorialtwo == true)
 				{
-					if (gst1.IsButtonDown(Buttons.DPadUp) || gst1.IsButtonDown(Buttons.LeftThumbstickUp))
+					if (gst1.IsButtonDown(Buttons.DPadUp))
 					{
 						tutorialtwo = false;
 						tutorialthree = true;
@@ -242,9 +242,9 @@ namespace Tempt_Fate
 					catch (ArgumentOutOfRangeException ex)
 					{
 						//logging system errors
-						var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate");
+						var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateScreenManager");
 						errorfile.Close();
-						File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate", ex.Message);
+						File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateScreenManager", ex.Message);
 					}
 				}
 				else if (tutorialsix == true)

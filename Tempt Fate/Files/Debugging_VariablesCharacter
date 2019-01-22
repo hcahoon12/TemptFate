@@ -1,6 +1,1 @@
-can attack = True
-block = False
-can shoot = True
-can walk = True
-health = 500
-mana = 600
+Combo reset = 500

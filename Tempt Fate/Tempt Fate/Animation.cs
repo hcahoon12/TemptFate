@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-
 namespace Tempt_Fate
 {
 	public class Animation
@@ -30,7 +29,6 @@ namespace Tempt_Fate
 			destRectangle = rec;
 			sourceRectangle = new Rectangle(animation.Width / cols * colsindex, animation.Height / rows * rowindex, animation.Width / cols, animation.Height / rows);
 		}
-
 		public void LoadContent(ContentManager Content)
 		{
 

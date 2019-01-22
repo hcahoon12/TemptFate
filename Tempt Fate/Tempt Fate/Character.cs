@@ -56,6 +56,7 @@ namespace Tempt_Fate
 		protected float volume = 1.0f;
 		protected float pitch = 0.0f;
 		protected float pan = 0.0f;
+		protected int playerNum;
 
 		public Character(Rectangle hitbox, double speed, int health , float mana)
 		{
@@ -113,7 +114,8 @@ namespace Tempt_Fate
 				enemy.BlockDamage(blockDamage);
 			}
 			velocity.Y += .8f; //default gravity
-			Buttons? button = gamePadButtons.Update(gamepadstate);
+			KeyboardState ks = Keyboard.GetState();
+			Buttons? button = gamePadButtons.Update(gamepadstate, playerNum);
 			//if no button is pressed then the timer will go off and the list clears 
 			if (button != null)
 			{
@@ -144,7 +146,7 @@ namespace Tempt_Fate
 				Jumped = false;
 			}
 			SomeKeyPressed = false;
-			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false && canWalk == true)
+			if (button == (Buttons.DPadUp) && Jumped == false && canWalk == true)
 			{
 				animation.Update(gameTime, hitbox);
 				if (facingRight == true)
@@ -161,7 +163,7 @@ namespace Tempt_Fate
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadRight) && canWalk == true)
+			if (button == (Buttons.DPadRight) && canWalk == true)
 			{
 				facingRight = true;
 				facingLeft = false;
@@ -174,7 +176,7 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) && canWalk == true)
+			if (button == (Buttons.DPadLeft) && canWalk == true)
 			{
 				facingLeft = true;
 				facingRight = false;
@@ -204,14 +206,14 @@ namespace Tempt_Fate
 			POnScreen();
 			//make a text file to check varaibeles 
 			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter")) { }
-			using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter"))
+			using (StreamWriter sw = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter"))
 			{
-				nf.WriteLine("can attack = " + canAttack);
-				nf.WriteLine("block = " + block);
-				nf.WriteLine("can shoot = " + canshoot);
-				nf.WriteLine("can walk = " + canWalk);
-				nf.WriteLine("health = " + health);
-				nf.WriteLine("mana = " + mana);
+				sw.WriteLine("Combo reset = " + combosReset.Interval);
+			    //nf.WriteLine("block = " + block);
+				//nf.WriteLine("can shoot = " + canshoot);
+				//nf.WriteLine("can walk = " + canWalk);
+				//nf.WriteLine("health = " + health);
+				//nf.WriteLine("mana = " + mana);
 			}
 		}
 		//makes enemies health minus the damage given

@@ -24,6 +24,7 @@ namespace Tempt_Fate
 		public Mystic(int x, int y) :base(new Rectangle(x, y, 100, 100), 6.6, 500, 600)
 		{
 			facingLeft = true;
+			playerNum = 2;
 		}
 		public override void LoadContent(ContentManager Content)
 		{
@@ -227,9 +228,9 @@ namespace Tempt_Fate
 			catch (ArgumentOutOfRangeException ex)
 			{
 				//logs sytem errors to text file
-				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate");
+				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateMystic");
 				errorfile.Close();
-				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFate", ex.Message);
+				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateMystic", ex.Message);
 			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
@@ -254,6 +255,8 @@ namespace Tempt_Fate
 			{
 				nf.WriteLine("can attack = " + canAttack);
 				nf.WriteLine("block = " + block);
+				nf.WriteLine("facing left = " + facingLeft);
+				nf.WriteLine("facing right = " + facingRight);
 				nf.WriteLine("can shoot = " + canshoot);
 				nf.WriteLine("can walk = " + canWalk);
 				nf.WriteLine("health = " + health);
