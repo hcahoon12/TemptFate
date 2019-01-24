@@ -10,8 +10,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Tempt_Fate
 {
-	class Gamepadbuttons
+	public class Gamepadbuttons
 	{
+		bool newRightTrigger;
+		bool oldRightTrigger;
 		bool newA;
 		bool newStart;
 		bool newB;
@@ -40,7 +42,14 @@ namespace Tempt_Fate
 		Keys y;
 		Keys righttrigger;
 		Keys b;
-
+		Keys Up2;
+		Keys right2;
+		Keys left2;
+		Keys a2;
+		Keys x2;
+		Keys y2;
+		Keys righttrigger2;
+		Keys b2;
 
 		public Gamepadbuttons()
 		{
@@ -70,6 +79,18 @@ namespace Tempt_Fate
 				x = Keys.V;
 				y = Keys.B;
 				b = Keys.N;
+				righttrigger = Keys.E;
+			}
+			if (playerNum == 2)
+			{
+				Up2 = Keys.Up;
+				right2 = Keys.Right;
+				left2 = Keys.Left;
+				a2 = Keys.NumPad1;
+				x2 = Keys.NumPad2;
+				y2 = Keys.NumPad3;
+				b2 = Keys.NumPad0;
+				righttrigger2 = Keys.RightShift;
 			}
 		}
 		public Buttons? Update(GamePadState gamepadstate, int playerNum) //returns button if button that was just pressed 
@@ -77,15 +98,16 @@ namespace Tempt_Fate
 			Buttons? returnVal = null;
 			setKeys(playerNum);
 			KeyboardState kbstate = Keyboard.GetState();
+			newRightTrigger = gamepadstate.IsButtonDown(Buttons.RightTrigger) || kbstate.IsKeyDown(righttrigger) || kbstate.IsKeyDown(righttrigger2);
 			newStart = gamepadstate.IsButtonDown(Buttons.Start) || kbstate.IsKeyDown(start);
-			newA = gamepadstate.IsButtonDown(Buttons.A) || kbstate.IsKeyDown(a);
-			newB = gamepadstate.IsButtonDown(Buttons.B) || kbstate.IsKeyDown(b);
-			newX = gamepadstate.IsButtonDown(Buttons.X) || kbstate.IsKeyDown(x);
-			newY = gamepadstate.IsButtonDown(Buttons.Y) || kbstate.IsKeyDown(y);
-			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft) || kbstate.IsKeyDown(left);
-			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight) || kbstate.IsKeyDown(right);
+			newA = gamepadstate.IsButtonDown(Buttons.A) || kbstate.IsKeyDown(a) || kbstate.IsKeyDown(a2);
+			newB = gamepadstate.IsButtonDown(Buttons.B) || kbstate.IsKeyDown(b) || kbstate.IsKeyDown(b2);
+			newX = gamepadstate.IsButtonDown(Buttons.X) || kbstate.IsKeyDown(x) || kbstate.IsKeyDown(x2);
+			newY = gamepadstate.IsButtonDown(Buttons.Y) || kbstate.IsKeyDown(y) || kbstate.IsKeyDown(y2);
+			newLeft = gamepadstate.IsButtonDown(Buttons.DPadLeft) || kbstate.IsKeyDown(left) || kbstate.IsKeyDown(left2);
+			newRight = gamepadstate.IsButtonDown(Buttons.DPadRight) || kbstate.IsKeyDown(right) || kbstate.IsKeyDown(right2);
 			newDown = gamepadstate.IsButtonDown(Buttons.DPadDown) || kbstate.IsKeyDown(down);
-			newUp = gamepadstate.IsButtonDown(Buttons.DPadUp) || kbstate.IsKeyDown(Up);
+			newUp = gamepadstate.IsButtonDown(Buttons.DPadUp) || kbstate.IsKeyDown(Up) || kbstate.IsKeyDown(Up2);
 			//return buttons so combos can equal true
 			if (newA == true && oldA == false)
 			{
@@ -94,6 +116,10 @@ namespace Tempt_Fate
 			else if (newStart == true && oldStart == false)
 			{
 				returnVal = Buttons.Start;
+			}
+			else if (newRightTrigger == true && oldRightTrigger == false)
+			{
+				returnVal = Buttons.RightTrigger;
 			}
 			else if (newB == true && oldB == false)
 			{
@@ -132,6 +158,7 @@ namespace Tempt_Fate
 			oldDown = newDown;
 			oldUp = newUp;
 			oldStart = newStart;
+			oldRightTrigger = newRightTrigger;
 			return returnVal; 
 		}
 	}

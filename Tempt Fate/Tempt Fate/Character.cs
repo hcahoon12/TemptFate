@@ -48,7 +48,7 @@ namespace Tempt_Fate
 		protected bool facingRight;
 		private Vector2 velocity;
 		private double speed;
-		private Gamepadbuttons gamePadButtons;
+		protected Gamepadbuttons gamePadButtons;
 		protected bool SomeKeyPressed;
 		protected List<Buttons> Combos;
 		public int x;
@@ -60,10 +60,6 @@ namespace Tempt_Fate
 
 		public Character(Rectangle hitbox, double speed, int health , float mana)
 		{
-			//sets a couple of timers for polishing the fighting
-			//attackDelay = new System.Timers.Timer();
-			//attackDelay.Interval = 1000;
-			//attackDelay.Elapsed += AttackDelay;
 			combosReset = new System.Timers.Timer();
 			combosReset.Interval = 500;
 			combosReset.Elapsed += ComboReset;
@@ -146,7 +142,7 @@ namespace Tempt_Fate
 				Jumped = false;
 			}
 			SomeKeyPressed = false;
-			if (button == (Buttons.DPadUp) && Jumped == false && canWalk == true)
+			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false && canWalk == true)
 			{
 				animation.Update(gameTime, hitbox);
 				if (facingRight == true)
@@ -163,7 +159,7 @@ namespace Tempt_Fate
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
-			if (button == (Buttons.DPadRight) && canWalk == true)
+			if (gamepadstate.IsButtonDown(Buttons.DPadRight) && canWalk == true)
 			{
 				facingRight = true;
 				facingLeft = false;
@@ -176,7 +172,7 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
-			if (button == (Buttons.DPadLeft) && canWalk == true)
+			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) && canWalk == true)
 			{
 				facingLeft = true;
 				facingRight = false;
@@ -204,17 +200,6 @@ namespace Tempt_Fate
 			animation.Update(gameTime, hitbox);
 			hitbox.Y += (int)velocity.Y;
 			POnScreen();
-			//make a text file to check varaibeles 
-			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter")) { }
-			using (StreamWriter sw = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesCharacter"))
-			{
-				sw.WriteLine("Combo reset = " + combosReset.Interval);
-			    //nf.WriteLine("block = " + block);
-				//nf.WriteLine("can shoot = " + canshoot);
-				//nf.WriteLine("can walk = " + canWalk);
-				//nf.WriteLine("health = " + health);
-				//nf.WriteLine("mana = " + mana);
-			}
 		}
 		//makes enemies health minus the damage given
 		public void TakeDamage(int damage)
@@ -235,12 +220,6 @@ namespace Tempt_Fate
 			Combos.Clear();
 			combosReset.Stop();
 		}
-		//once it starts it removes the attackbox does timer
-	//	public void AttackDelay(Object source, System.Timers.ElapsedEventArgs e)
-		//{
-		//	modifyAttackBox(-300, 500, 20, 100);
-		//	attackDelay.Stop();
-	//	}
 		//function for moving attackbox
 		public void modifyAttackBox(int x, int y, int width , int height)
 		{
@@ -280,6 +259,7 @@ namespace Tempt_Fate
 			if (hitbox.X >= 860){hitbox.X = 860;}
 			if (hitbox.X <= 0) { hitbox.X = 0; }
 		}
+
 		public void Draw(SpriteBatch spritebatch)
 		{
 			foreach (Shot s in shootlist)
@@ -287,7 +267,6 @@ namespace Tempt_Fate
 				s.Draw(spritebatch);
 			}
 			animation.Draw(spritebatch);
-			
 		}
 	}
 }

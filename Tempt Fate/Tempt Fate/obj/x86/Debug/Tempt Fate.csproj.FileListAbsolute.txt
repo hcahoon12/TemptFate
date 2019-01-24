@@ -101,3 +101,5 @@ C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\base_
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\JumpingMystic.xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Jumpingedt (2).xnb
 C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\JumpingMystic (2).xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Base Strong Punch.xnb
+C:\TemptFate\TemptFate\Tempt Fate\Tempt Fate\bin\Windows\x86\Debug\Content\Blocking.xnb

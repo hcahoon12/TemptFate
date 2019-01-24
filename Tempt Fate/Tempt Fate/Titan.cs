@@ -13,7 +13,7 @@ namespace Tempt_Fate
 {
 	public class Titan : Character
 	{
-		//creates list of buttons that is are attacks
+		//creates list of buttons that are attacks
 		List<Buttons> baseAttackOne = new List<Buttons>() { Buttons.X }; //x
 		List<Buttons> comboOne = new List<Buttons>() {Buttons.A , Buttons.X , Buttons.Y };//y x a
 		List<Buttons> comboTwo = new List<Buttons>() { Buttons.X, Buttons.X, Buttons.A };//a x x
@@ -22,7 +22,11 @@ namespace Tempt_Fate
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
 		private Texture2D basePunchRight;
 		private Texture2D basePunchLeft;
-		
+		private Texture2D baseStrongPunchRight;
+		private Texture2D baseStrongPunchLeft;
+		private Texture2D BlockRight;
+		private Texture2D BlockLeft;
+
 		public Titan(int x,int y):base(new Rectangle(x, y, 100, 100), 6.6, 500, 500)
 		{
 			facingRight = true;
@@ -30,62 +34,37 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
+			baseStrongPunchRight = Content.Load<Texture2D>("Base Strong Punch");
+			BlockRight = Content.Load<Texture2D>("Blocking");
 			basePunchRight = Content.Load<Texture2D>("basePunch");
 			basePunchLeft = Content.Load<Texture2D>("basePunch (2)");
 			base.LoadContent(Content, "base_walk_edt_mid", "base_walk_edt_mid (2)", "jumpingedt", "jumpingedt (2)", "base_walk_edt_mid (2)", "base_walk_edt_mid");
 		}
-		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
+		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gst1, Character enemy)
 		{
+			KeyboardState ks = Keyboard.GetState();
 			//makes sure modifyAttackBox cannot do damage yet
 			modifyAttackBox(-300, 500, 20, 100);
-			if (gamepadstate.IsButtonDown(Buttons.B) && mana < 500)
+			Buttons? button = gamePadButtons.Update(gst1, 1);
+			if (gst1.IsButtonDown(Buttons.B) && mana < 500 ||ks.IsKeyDown(Keys.N) && mana < 500)
 			{
 				mana += 2f;
 			}
 			//try makes sure the inputs are in range
 			try
 			{
-				if (gamepadstate.IsButtonDown(Buttons.DPadDown) && gamepadstate.IsButtonDown(Buttons.Y) && canAttack == true)
-				{
-					//fix for loop so that they gradually go up and down
-					for (int i = 300; i < enemy.hitbox.Y;)
-					{
-						enemy.hitbox.Y--;
-					}
-					if (enemy.block == true)
-					{
-						blockDamage = 1.8f;
-						mana -= 2;
-					}
-					if (mana > 0 && enemy.block == false)
-					{
-						
-						damage = 1;
-						mana -= 3;
-					}
-					else { damage = 0; }
-					if (facingRight == true)
-					{
-						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-					}
-					else
-					{
-						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
-					}
-					SomeKeyPressed = true;
-				}
-				if (gamepadstate.IsButtonDown(Buttons.X) && canAttack == true)
+				if (button == Buttons.X && canAttack == true)
 				{
 					effect.Play(volume , pitch-.2f , pan);
 					if (enemy.block == true)
 					{
-						blockDamage = 1.8f;
-						mana -= 2;
+						blockDamage = 3.6f;
+						mana -= 10;
 					}
 					if (mana > 0 && enemy.block == false)
 					{
-						mana -= 4;
-						damage = 3;
+						mana -= 22;
+						damage = 10;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
@@ -93,8 +72,6 @@ namespace Tempt_Fate
 						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 						animation.SetTexture(basePunchRight, 0);
 						animation.movetexture();
-						//attackDelay.Stop();
-						//attackDelay.Start();
 					}
 					else
 					{
@@ -104,22 +81,25 @@ namespace Tempt_Fate
 					}
 					SomeKeyPressed = true;
 				}
-				if (gamepadstate.IsButtonDown(Buttons.Y) && canAttack == true)
+				if (button == Buttons.Y && canAttack == true)
 				{
+					effect.Play(volume, pitch - .2f, pan);
 					if (enemy.block == true)
 					{
-						blockDamage = 2.4f;
-						mana -= 3;
+						blockDamage = 4.4f;
+						mana -= 15;
 					}
 					if (mana > 0 && enemy.block == false)
 					{
-						mana -= 7;
-						damage = 7;
+						mana -= 35;
+						damage = 19;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
 					{
 						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+						animation.SetTexture(baseStrongPunchRight, 0);
+						animation.movetexture();
 					}
 					else
 					{
@@ -127,17 +107,18 @@ namespace Tempt_Fate
 					}
 					SomeKeyPressed = true;
 				}
-				if (gamepadstate.IsButtonDown(Buttons.A) && canAttack == true)
+				if (button == Buttons.A && canAttack == true)
 				{
+					effect.Play(volume, pitch - .2f, pan);
 					if (enemy.block == true)
 					{
-						blockDamage = 2;
-						mana -= 3;
+						blockDamage = 4;
+						mana -= 13;
 					}
 					if (mana > 0 && enemy.block == false)
 					{
-						mana -= 5;
-						damage = 5;
+						mana -= 29;
+						damage = 16;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
@@ -258,12 +239,17 @@ namespace Tempt_Fate
 					SomeKeyPressed = true;
 				}
 				//block
-				if (gamepadstate.IsButtonDown(Buttons.RightTrigger))
+				if (button == Buttons.RightTrigger)
 				{
 					block = true;
 					canAttack = false;
 					canWalk = false;
 					SomeKeyPressed = true;
+					if (facingRight == true)
+					{
+						animation.SetTexture(BlockRight, 0);
+						animation.movetexture();
+					}
 				}
 				else
 				{
@@ -274,10 +260,6 @@ namespace Tempt_Fate
 			}
 			catch (ArgumentOutOfRangeException ex)
 			{
-				//logs sytem errors to text file
-				var errorfile = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateTitan");
-				errorfile.Close();
-				File.WriteAllText("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\errorTemptFateTitan", ex.Message);
 			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)
@@ -296,20 +278,7 @@ namespace Tempt_Fate
 					}
 				}
 			animation.Update(gameTime, hitbox);
-			base.Update(gameTime, Lines, gamepadstate, enemy);
-			//make a text file to check varaibeles 
-			using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesTitan")) { }
-			using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Debugging_VariablesTitan"))
-			{
-				nf.WriteLine("can attack = " + canAttack);
-				nf.WriteLine("block = " + block);
-				nf.WriteLine("facing left = " + facingLeft);
-				nf.WriteLine("facing right = " + facingRight);
-				nf.WriteLine("can shoot = " + canshoot);
-				nf.WriteLine("can walk = " + canWalk);
-				nf.WriteLine("health = " + health);
-				nf.WriteLine("mana = " + mana);
-			}
+			base.Update(gameTime, Lines, gst1, enemy);
 		}
 	}
 }

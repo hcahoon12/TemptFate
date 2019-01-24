@@ -46,8 +46,14 @@ namespace Tempt_Fate
 			song = Content.Load<Song>("Beat");
 			MediaPlayer.Play(song);
 			MediaPlayer.IsRepeating = false;
-			MediaPlayer.Volume -= .75f;
-			loadVolume();
+			if (!File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
+			{
+				MediaPlayer.Volume -= .75f;
+			}
+			else
+			{
+				loadVolume();
+			}
 			MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 			addLines();
 		}
