@@ -15,6 +15,7 @@ namespace Tempt_Fate
 {
 	public class Character
 	{
+        protected SoundEffect effectHeavy;
 		protected SoundEffect effect;
 		public bool canAttack;
 		public bool canWalk;
@@ -31,7 +32,7 @@ namespace Tempt_Fate
 		protected static Timer shotDelay;
 		protected Texture2D Shottexture;
 		private Texture2D hitTexture;
-		public int health;
+        public int health;
 		protected Animation animation;
 		protected Texture2D RightWalk;
 		public List<Shot> shootlist;
@@ -43,12 +44,14 @@ namespace Tempt_Fate
 		public Texture2D healthTexture;
 		public Texture2D healthTexture2;
 		public Rectangle healthRectangle;
-		private bool Jumped;
+		public bool Jumped;
 		protected bool facingLeft;
 		protected bool facingRight;
-		private Vector2 velocity;
-		private double speed;
+		public Vector2 velocity;
+        public Vector2 velocity2;
+        private double speed;
 		protected Gamepadbuttons gamePadButtons;
+        protected Buttons? button;
 		protected bool SomeKeyPressed;
 		protected List<Buttons> Combos;
 		public int x;
@@ -81,6 +84,7 @@ namespace Tempt_Fate
 			Jumped = true;
 			gamePadButtons = new Gamepadbuttons();
 		}
+
 		public virtual void LoadContent(ContentManager Content)
 		{ }
 		public void LoadContent(ContentManager Content, string rightTexture, string leftTexture, string jumpAnimation, string JumpLeftAnimation, string shottexture, string hittexture)
@@ -96,14 +100,18 @@ namespace Tempt_Fate
 			healthTexture = Content.Load<Texture2D>("Healthbar");
 			healthTexture2 = Content.Load<Texture2D>("Healthbar (3)");
 			manaTexture = Content.Load<Texture2D>("manaTexture");
-			effect = Content.Load<SoundEffect>("hitting");
-		}
+			effect = Content.Load<SoundEffect>("Slap");
+            effectHeavy = Content.Load<SoundEffect>("upperCut");
+        }
+		
 		public virtual void Update(GameTime gameTime, List<Line> Lines, GamePadState gamepadstate, Character enemy)
 		{
 			//how the attacks do damage to the other character
-			if (attackBox.Intersects(enemy.hitbox))
+			if (attackBox.Intersects(enemy.hitbox) && enemy.block == false)
 			{
 				enemy.TakeDamage(damage);
+                enemy.velocity.X += enemy.velocity2.X;
+                enemy.velocity.Y += enemy.velocity2.Y;
 			}
 			if (attackBox.Intersects(enemy.hitbox) && enemy.block == true)
 			{
@@ -111,7 +119,6 @@ namespace Tempt_Fate
 			}
 			velocity.Y += .8f; //default gravity
 			KeyboardState ks = Keyboard.GetState();
-			Buttons? button = gamePadButtons.Update(gamepadstate, playerNum);
 			//if no button is pressed then the timer will go off and the list clears 
 			if (button != null)
 			{
@@ -127,39 +134,53 @@ namespace Tempt_Fate
 				}
 			}
 			//cresates interaction for lines and characters
-			for (int l = 0; l < Lines.Count; l++)
+			for (int l = 0; l < Math.Abs(velocity.Y); l++)
 			{
-				if (hitbox.Intersects(Lines[l].rectangle))
+                hitbox.Y+=(velocity.Y>0)?1:-1;
+				if (hitbox.Intersects(Lines[0].rectangle))
 				{
-					hitbox.Y--;
-					velocity.Y = 0;
-				}
+                    hitbox.Y -= (velocity.Y > 0) ? 1 : -1;
+                    velocity.Y = 0;
+                    Jumped = false;
+                }
 			}
-			//makes ther character able to jump when he reaches the bottom of the screen
-			if (hitbox.Y + hitbox.Height >= 599)
+            velocity.X += (velocity.X > 0) ? -.1f : .1f;
+            //for (int l = 0; l <Math.Abs(velocity.X); l++)
+            //{
+            //   hitbox.X += ((int)velocity.X > 0) ? 1 : ((int)velocity.X<0)? -1:0;
+            hitbox.X += (int)velocity.X;
+                if (hitbox.X > 860 || hitbox.X < 0)
+                {
+                    hitbox.X = (velocity.X > 0) ? 860 : 0;
+                    velocity.X = 0;
+                    Jumped = false;
+                }
+          //  }
+            //makes ther character able to jump when he reaches the bottom of the screen
+            /*if (hitbox.Y + hitbox.Height >= 599)
 			{
 				velocity.Y = 0f;
 				Jumped = false;
-			}
-			SomeKeyPressed = false;
-			if (gamepadstate.IsButtonDown(Buttons.DPadUp) && Jumped == false && canWalk == true)
+			}*/
+            SomeKeyPressed = false;
+			if (gamePadButtons.newUp && Jumped == false && canWalk == true)
 			{
 				animation.Update(gameTime, hitbox);
 				if (facingRight == true)
 				{
-					animation.SetTexture(JumpAnimation, 0);
+					animation.SetTexture(JumpAnimation, 0, false);
 					animation.movetexture();
 				}
 				else
 				{
-					animation.SetTexture(JumpLeft, 0);
+					animation.SetTexture(JumpLeft, 0,false);
 					animation.movetexture();
 				}
 				velocity.Y -= 19;
 				Jumped = true;
 				SomeKeyPressed = true;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadRight) && canWalk == true)
+			if (gamePadButtons.newRight && canWalk == true)
 			{
 				facingRight = true;
 				facingLeft = false;
@@ -172,7 +193,7 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
-			if (gamepadstate.IsButtonDown(Buttons.DPadLeft) && canWalk == true)
+			if (gamePadButtons.newLeft && canWalk == true)
 			{
 				facingLeft = true;
 				facingRight = false;
@@ -185,47 +206,57 @@ namespace Tempt_Fate
 				}
 				SomeKeyPressed = true;
 			}
-			//if no button is being pressed reset animation
-			if (SomeKeyPressed == false)
-			{
-				if (facingRight == true)
-				{
-					animation.ResetFrames(RightWalk);
-				}
-				else
-				{
-					animation.ResetFrames(LeftWalk);
-				}
-			}
+		
 			animation.Update(gameTime, hitbox);
-			hitbox.Y += (int)velocity.Y;
+			//hitbox.Y += (int)velocity.Y;
 			POnScreen();
 		}
-		//makes enemies health minus the damage given
+		/// <summary>
+		/// makes enemies health minus the damage given
+		/// </summary>
+		/// <param name="damage"></param>
 		public void TakeDamage(int damage)
 		{
-			animation.SetTexture(hitTexture, 0);
+			animation.SetTexture(hitTexture, 0,false);
 			animation.movetexture();
 			health = health - damage;
 		}
+		/// <summary>
+		/// a function to get hit while blocking and take away a certain amount of damage
+		/// </summary>
+		/// <param name="blockDamage"></param>
 		public void BlockDamage(float blockDamage)
 		{
-			animation.SetTexture(RightWalk, 0);
+			animation.SetTexture(RightWalk, 0,false);
 			animation.movetexture();
 			health = health - (int)blockDamage;
 		}
-		//clears combos
+		/// <summary>
+		/// clears combos
+		/// </summary>
+		/// <param name="source"></param>
+		/// <param name="e"></param>
 		private void ComboReset(Object source, System.Timers.ElapsedEventArgs e)
 		{
 			Combos.Clear();
 			combosReset.Stop();
 		}
-		//function for moving attackbox
+		/// <summary>
+		/// function for moving attackbox
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
 		public void modifyAttackBox(int x, int y, int width , int height)
 		{
 			attackBox = new Rectangle(x, y, 20 ,100);
 		}
-		//makes it where the character can only shoot once every two seconds
+		/// <summary>
+		/// makes it where the character can only shoot once every two seconds
+		/// </summary>
+		/// <param name="source"></param>
+		/// <param name="e"></param>
 		public void ShotDelay(Object source, System.Timers.ElapsedEventArgs e)
 		{
 			if (canshoot == false)
@@ -234,7 +265,9 @@ namespace Tempt_Fate
 				canshoot = true;
 			}
 		}
-		//creates new bullet
+		/// <summary>
+		/// creates new bullet
+		/// </summary>
 		protected void Shoot()
 		{
 			Shot newShot = new Shot(Shottexture, hitbox.X, hitbox.Y, Direction);
@@ -243,16 +276,19 @@ namespace Tempt_Fate
 				shootlist.Add(newShot);
 			}
 		}
-		//below are a few functions to clean the update a bit
+		/// <summary>
+		/// below are a few functions to clean the update a bit
+		/// </summary>
+		/// <param name="gameTime"></param>
 		public void WalkLeft(GameTime gameTime)
 		{
 			animation.Update(gameTime, hitbox);
-			animation.SetTexture(LeftWalk, 0);
+			animation.SetTexture(LeftWalk, 0,false);
 		}
 		public void WalkRight(GameTime gameTime)
 		{
 			animation.Update(gameTime, hitbox);
-			animation.SetTexture(RightWalk, 0);
+            animation.SetTexture(RightWalk, 0, false);
 		}
 		public void POnScreen()
 		{

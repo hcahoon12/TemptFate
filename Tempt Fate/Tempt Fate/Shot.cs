@@ -43,6 +43,7 @@ namespace Tempt_Fate
 
 		public void Update()
 		{
+			//has bullet hitbox constantly traveling 
 			hitbox.X += speed;
 			distravled += Math.Abs(speed);
 			//if the bullet travels more than 600 and if it isnt bullet will be active still

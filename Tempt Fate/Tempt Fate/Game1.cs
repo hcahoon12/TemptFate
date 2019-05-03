@@ -12,10 +12,9 @@ using System.IO;
 
 namespace Tempt_Fate
 {
+    //change blocking animation
 	public class Game1 : Game
 	{
-		//fix attack box being on screen to long, add timer
-		//fix animation for combos and blocking, wont rotate through frames
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		SpriteFont Fontone;
@@ -34,7 +33,6 @@ namespace Tempt_Fate
 			graphics.PreferredBackBufferHeight = 600;
 			graphics.PreferredBackBufferWidth = 960;
 			graphics.IsFullScreen = false;
-			
 			Content.RootDirectory = "Content";
 		}
 		protected override void LoadContent()
@@ -46,6 +44,7 @@ namespace Tempt_Fate
 			song = Content.Load<Song>("Beat");
 			MediaPlayer.Play(song);
 			MediaPlayer.IsRepeating = false;
+			//checks to see if the save file has preffered volume for music yet if not sets base volume
 			if (!File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 			{
 				MediaPlayer.Volume -= .75f;
@@ -57,7 +56,11 @@ namespace Tempt_Fate
 			MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 			addLines();
 		}
-		//plays the song
+		/// <summary>
+		/// plays song
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
 		{
 			MediaPlayer.Play(song);
@@ -65,7 +68,7 @@ namespace Tempt_Fate
 		protected override void Update(GameTime gameTime)
 		{
 			var gst1 = GamePad.GetState(PlayerIndex.One);
-			Buttons? button = gamePadButtons.Update(gst1 , 1);
+
 			GamePadState gst2 = GamePad.GetState(PlayerIndex.Two);
 			//creates and loads in the character while the person is still on the title screen
 			if (Screen.titleScreen.Bool == true)
@@ -90,9 +93,11 @@ namespace Tempt_Fate
 			{
 				Screen.Update(gameTime);
 			}
+			//gives the person the option to save volume
 			else if (Screen.settingsScreen.Bool == true)
 			{
-				if (button == Buttons.DPadLeft)
+                Buttons? button = gamePadButtons.Update(gst1, 1);
+                if (button == Buttons.DPadLeft)
 				{
 					MediaPlayer.Volume = MediaPlayer.Volume - .05f;
 					saveFile(null);
@@ -112,6 +117,7 @@ namespace Tempt_Fate
 			//once they leave titlescreen players update and can fight
 			else
 			{
+				loadGame();
 				loadWins();
 				titan.Update(gameTime, Lines, gst1, mystic);
 				mystic.Update(gameTime, Lines, gst2, titan);
@@ -142,7 +148,7 @@ namespace Tempt_Fate
 				spriteBatch.Draw(Screen.LineTexture, Screen.LinePosition, Color.White);
 				titan.shootlist.Clear();
 			}
-			//gets player on screen and gives actions for the plauer to complete
+			//gets player on screen and gives actions for the player to complete
 			else if (Screen.tutorialScreen.Bool == true)
 			{
 				Screen.tutorialScreen.Draw(spriteBatch, new Rectangle(0, 0, 1000, 600));
@@ -250,12 +256,50 @@ namespace Tempt_Fate
 					mystic.Draw(spriteBatch);
 					spriteBatch.Draw(mystic.healthTexture2, mystic.healthRectangle, Color.White);
 				}
+				if (titan.health > 0 && mystic.health > 0 && Screen.exit == true)
+				{
+					if (!File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame"))
+					{
+						using (var stream = File.Create("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame")) { }
+						using (StreamWriter nf = new StreamWriter("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame"))
+						{
+							nf.WriteLine(mystic.hitbox.X+","+mystic.hitbox.Y+","+mystic.health+","+mystic.mana);
+							nf.WriteLine(titan.hitbox.X + "," + titan.hitbox.Y + "," + titan.health + ","+titan.mana);
+						}
+					}
+				}
 			}
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}
 		public int wins;
-		//loads music that the player recently saved 
+		/// <summary>
+		/// loads game if the players exit
+		/// </summary>
+		public void loadGame()
+		{
+			if (File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame"))
+			{
+				using (StreamReader sr = new StreamReader("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame"))
+				{
+					sr.ReadLine();
+					string[] mysticInfo = sr.ReadLine().Split(',');
+					string[] titanInfo = sr.ReadLine().Split(',');
+					mystic.hitbox.X = Convert.ToInt32(mysticInfo[0]);
+					mystic.hitbox.Y = Convert.ToInt32(mysticInfo[1]);
+					mystic.health = Convert.ToInt32(mysticInfo[2]);
+					mystic.mana = Convert.ToInt32(mysticInfo[3]);
+					titan.hitbox.X = Convert.ToInt32(titanInfo[0]);
+					titan.hitbox.Y = Convert.ToInt32(titanInfo[1]);
+					titan.health = Convert.ToInt32(titanInfo[2]);
+					titan.mana = Convert.ToInt32(titanInfo[3]);
+				}
+				File.Delete("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\CurrentGame");
+			}
+		}
+		/// <summary>
+		/// loads music that the player recently saved 
+		/// </summary>
 		public void loadVolume()
 		{
 			createFile();
@@ -265,7 +309,9 @@ namespace Tempt_Fate
 				MediaPlayer.Volume=Convert.ToSingle(sr.ReadLine())/100;
 			}
 		}
-		//loads both players wins and decides if they have enough to activate special abilities such as more health
+		/// <summary>
+		/// loads both players wins and decides if they have enough to activate special abilities such as more health
+		/// </summary>
 		public void loadWins()
 		{
 			createFile();
@@ -290,14 +336,17 @@ namespace Tempt_Fate
 				}
 			}
 		}
-		//saves the volume, and which character has won for later use
+		/// <summary>
+		/// saves the volume, and which character has won for later use
+		/// </summary>
+		/// <param name="username"></param>
 		public void saveFile(string username)
 		{
 			try
 			{
 				createFile();
 				using (StreamWriter nf = new StreamWriter("saveFile.temp"))
-			{
+				{
 				using (StreamReader sr = new StreamReader("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
 				{
 					string line;
@@ -337,7 +386,9 @@ namespace Tempt_Fate
 				Console.WriteLine(e.Message);
 			}
 		}
-		//checking to see if save file is made yet and if it is then nothing happens if not it creates it
+		/// <summary>
+		/// checking to see if save file is made yet and if it is then nothing happens if not it creates it
+		/// </summary>
 		public void createFile()
 		{
 			if (!File.Exists("C:\\TemptFate\\TemptFate\\Tempt Fate\\Files\\Save.txt"))
@@ -351,7 +402,9 @@ namespace Tempt_Fate
 				}
 			}
 		}
-		//creates line
+		/// <summary>
+		/// creates line
+		/// </summary>
 		public void addLines()
 		{
 			Lines.Add(new Line(Content.Load<Texture2D>("TestMystic"), new Vector2(0, 600), 1200, 8));

@@ -13,6 +13,7 @@ namespace Tempt_Fate
 {
 	public class Levels
 	{
+		//has levels called in screenmanager to more simply create a level with a texture and location and if its visible
 		public Texture2D Texture;
 		public Rectangle location;
 		public bool Bool;

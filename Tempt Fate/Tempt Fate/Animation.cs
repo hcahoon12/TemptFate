@@ -21,9 +21,11 @@ namespace Tempt_Fate
 		private float elapsed;
 		private float delay = 700f;
 		private int rows;
+        private bool update;
 		public Animation(Texture2D defultTexture, int cols, int rows, Rectangle rec)
 		{
 			animation = defultTexture;
+            update = false;
 			this.cols = cols;
 			this.rows = rows;
 			destRectangle = rec;
@@ -33,9 +35,14 @@ namespace Tempt_Fate
 		{
 
 		}
-		//set texture is called in character to get a new texture and what row the pictuere is in
-		public void SetTexture(Texture2D currentTexture, int row)
+		/// <summary>
+		/// set texture is called in character to get a new texture and what row the pictuere is in
+		/// </summary>
+		/// <param name="currentTexture"></param>
+		/// <param name="row"></param>
+		public void SetTexture(Texture2D currentTexture, int row, bool autoUpdate)
 		{
+            update = autoUpdate;
 			animation = currentTexture;
 			if (row >= rows)
 			{
@@ -43,11 +50,15 @@ namespace Tempt_Fate
 			}
 			rowindex = row;
 		}
-		//this is called in character class when buttons are not pressed the picture will reset back to the first frame
- 		public void ResetFrames(Texture2D resetFrameTexture)
+		/// <summary>
+		/// when buttons are not pressed the picture will reset back to the first frame
+		/// </summary>
+		/// <param name="resetFrameTexture"></param>
+		public void ResetFrames(Texture2D resetFrameTexture)
 		{
 			colsindex = 0;
 			movetexture();
+            update = false;
 		}
 		public void Update(GameTime gameTime, Rectangle drawRectangle)
 		{
@@ -55,15 +66,22 @@ namespace Tempt_Fate
 			elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 			if (elapsed >= delay)
 			{
+                if (update)
+                {
+                    movetexture();
+                }
 				colsindex++;
 				if (colsindex >= cols)
 				{
 					colsindex = 0;
+                    update=false;
 				}
 				elapsed = 0;
 			}
 		}
-		//This makes the persons frame actually cycle through 
+		/// <summary>
+		/// This makes the persons frame actually cycle through 
+		/// </summary>
 		public void movetexture()
 		{
 			sourceRectangle = new Rectangle(animation.Width / cols * colsindex, animation.Height / rows * rowindex, animation.Width / cols, animation.Height / rows);

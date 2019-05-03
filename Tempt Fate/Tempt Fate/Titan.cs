@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using System.Diagnostics;
 
 namespace Tempt_Fate
 {
@@ -22,8 +23,6 @@ namespace Tempt_Fate
 		List<Buttons> specialShotRight = new List<Buttons>() { Buttons.X, Buttons.DPadRight, Buttons.DPadDown };//down right X
 		private Texture2D basePunchRight;
 		private Texture2D basePunchLeft;
-		private Texture2D baseStrongPunchRight;
-		private Texture2D baseStrongPunchLeft;
 		private Texture2D BlockRight;
 		private Texture2D BlockLeft;
 
@@ -34,56 +33,57 @@ namespace Tempt_Fate
 		}
 		public override void LoadContent(ContentManager Content)
 		{
-			baseStrongPunchRight = Content.Load<Texture2D>("Base Strong Punch");
 			BlockRight = Content.Load<Texture2D>("Blocking");
+			BlockLeft = Content.Load<Texture2D>("Blocking (2)");
 			basePunchRight = Content.Load<Texture2D>("basePunch");
 			basePunchLeft = Content.Load<Texture2D>("basePunch (2)");
 			base.LoadContent(Content, "base_walk_edt_mid", "base_walk_edt_mid (2)", "jumpingedt", "jumpingedt (2)", "base_walk_edt_mid (2)", "base_walk_edt_mid");
 		}
+
 		public override void Update(GameTime gameTime, List<Line> Lines, GamePadState gst1, Character enemy)
 		{
+            enemy.velocity2.X = 0;
+            enemy.velocity2.Y = 0;
 			KeyboardState ks = Keyboard.GetState();
 			//makes sure modifyAttackBox cannot do damage yet
 			modifyAttackBox(-300, 500, 20, 100);
-			Buttons? button = gamePadButtons.Update(gst1, 1);
-			if (gst1.IsButtonDown(Buttons.B) && mana < 500 ||ks.IsKeyDown(Keys.N) && mana < 500)
+			button = gamePadButtons.Update(gst1, 1);
+			if (gamePadButtons.newB && mana < 500)
 			{
 				mana += 2f;
 			}
-			//try makes sure the inputs are in range
-			try
+			if (button == Buttons.X && canAttack == true)
 			{
-				if (button == Buttons.X && canAttack == true)
+				effect.Play(volume , pitch-.2f , pan);
+				if (enemy.block == true)
 				{
-					effect.Play(volume , pitch-.2f , pan);
-					if (enemy.block == true)
-					{
-						blockDamage = 3.6f;
-						mana -= 10;
-					}
-					if (mana > 0 && enemy.block == false)
-					{
-						mana -= 22;
-						damage = 10;
-					}
-					else { damage = 0; }
-					if (facingRight == true)
-					{
-						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-						animation.SetTexture(basePunchRight, 0);
-						animation.movetexture();
-					}
-					else
-					{
-						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
-						animation.SetTexture(basePunchLeft, 0);
-						animation.movetexture();
-					}
-					SomeKeyPressed = true;
+					blockDamage = 3.6f;
+					mana -= 10;
 				}
-				if (button == Buttons.Y && canAttack == true)
+				if (mana > 0 && enemy.block == false)
 				{
-					effect.Play(volume, pitch - .2f, pan);
+					mana -= 22;
+					damage = 15;
+				}
+				else { damage = 0; }
+				if (facingRight == true)
+				{
+					modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+                    animation.SetTexture(basePunchRight, 0,true);
+                    animation.movetexture();
+                }
+				else
+				{
+					modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+                    animation.SetTexture(basePunchLeft, 0,true);
+                    animation.movetexture();
+
+                }
+				SomeKeyPressed = true;
+			}
+			if (button == Buttons.Y && canAttack == true)
+				{
+					effectHeavy.Play(volume, pitch - .2f, pan);
 					if (enemy.block == true)
 					{
 						blockDamage = 4.4f;
@@ -92,70 +92,85 @@ namespace Tempt_Fate
 					if (mana > 0 && enemy.block == false)
 					{
 						mana -= 35;
-						damage = 19;
+						damage = 24;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
 					{
 						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-						animation.SetTexture(baseStrongPunchRight, 0);
+						animation.SetTexture(basePunchRight, 0,true);
 						animation.movetexture();
 					}
 					else
 					{
 						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+						animation.SetTexture(basePunchLeft, 0,true);
+						animation.movetexture();
 					}
 					SomeKeyPressed = true;
 				}
-				if (button == Buttons.A && canAttack == true)
+			if (button == Buttons.A && canAttack == true)
+			{
+                effect.Play(volume, pitch - .2f, pan);
+                if (enemy.block == true)
 				{
-					effect.Play(volume, pitch - .2f, pan);
-					if (enemy.block == true)
-					{
-						blockDamage = 4;
-						mana -= 13;
-					}
-					if (mana > 0 && enemy.block == false)
-					{
-						mana -= 29;
-						damage = 16;
-					}
-					else { damage = 0; }
-					if (facingRight == true)
-					{
-						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-					}
-					else
-					{
-						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
-					}
-					SomeKeyPressed = true;
+					blockDamage = 4;
+					mana -= 13;
 				}
-				//creates combos
-				if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2] && canAttack == true)
+				if (mana > 0 && enemy.block == false)
 				{
-					if (enemy.block == true)
-					{
-						blockDamage = 3f;
-						mana -= 5;
-					}
-					if (mana > 0 && enemy.block == false)
-					{
-						mana -= 20;
-						damage = 10;
-					}
-					else { damage = 0; }
-					if (facingRight == true)
-					{
-						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
-					}
-					else
-					{
-						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
-					}
-					SomeKeyPressed = true;
+					mana -= 29;
+					damage = 21;
 				}
-				if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2] && canAttack == true)
+				else { damage = 0; }
+				if (facingRight == true)
+				{
+					modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+					animation.SetTexture(basePunchRight, 0, true);
+					animation.movetexture();
+				}
+				else
+				{
+					modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+					animation.SetTexture(basePunchLeft, 0,true);
+					animation.movetexture();
+				}
+				SomeKeyPressed = true;
+			}
+			//creates combos makes sure they are in range 
+
+			if (Combos.Count > 2)
+			{
+                if (comboOne[0] == Combos[0] && comboOne[1] == Combos[1] && comboOne[2] == Combos[2] && canAttack == true)
+                {
+
+                    if (enemy.block == true)
+                    {
+                        blockDamage = 3f;
+                        mana -= 5;
+
+                    }
+                    if (mana >= 20 && enemy.block == false)
+                    {
+                        mana -= 28;
+                        damage = 10;
+                        enemy.velocity2.Y = -20;
+                    }
+                    else { damage = 0; }
+                    if (facingRight == true)
+                    {
+                        modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+                        enemy.velocity2.X = 7;
+                    }
+                    else
+                    {
+                        modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+                        enemy.velocity2.X = -7;
+                    }
+                    SomeKeyPressed = true;
+                    Combos.Clear();
+				}
+				else if (comboTwo[0] == Combos[0] && comboTwo[1] == Combos[1] && comboTwo[2] == Combos[2] && canAttack == true)
 				{
 					if (enemy.block == true)
 					{
@@ -164,21 +179,26 @@ namespace Tempt_Fate
 					}
 					if (mana > 0 && enemy.block == false)
 					{
-						mana -= 13;
+						mana -= 19;
 						damage = 8;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
 					{
-						modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
+                        velocity.X += 7;
+                        enemy.velocity2.X += 8;
+                        modifyAttackBox(hitbox.X + 100, hitbox.Y, 20, 100);
 					}
 					else
 					{
-						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
+                        velocity.X -= 7;
+                        enemy.velocity2.X -= 8;
+                        modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 					SomeKeyPressed = true;
+                    Combos.Clear();
 				}
-				if (comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2] && canAttack == true)
+				else if (comboThree[0] == Combos[0] && comboThree[1] == Combos[1] && comboThree[2] == Combos[2] && canAttack == true)
 				{
 					if (enemy.block == true)
 					{
@@ -187,8 +207,8 @@ namespace Tempt_Fate
 					}
 					if (mana > 0 && enemy.block == false)
 					{
-						mana -= 20;
-						damage = 15;
+						mana -= 8;
+						damage = 12;
 					}
 					else { damage = 0; }
 					if (facingRight == true)
@@ -200,9 +220,11 @@ namespace Tempt_Fate
 						modifyAttackBox(hitbox.X - 20, hitbox.Y, 20, 100);
 					}
 					SomeKeyPressed = true;
+                    Combos.Clear();
 				}
+               
 				//creates a shot that that is based on down left / right and x and also has a timer
-				if (specialShotLeft[0] == Combos[0] && specialShotLeft[1] == Combos[1] && specialShotLeft[2] == Combos[2] && canshoot == true && canAttack == true)
+				else if (specialShotLeft[0] == Combos[0] && specialShotLeft[1] == Combos[1] && specialShotLeft[2] == Combos[2] && canshoot == true && canAttack == true)
 				{
 					if (enemy.block == true)
 					{
@@ -212,15 +234,16 @@ namespace Tempt_Fate
 					if (mana > 0 && enemy.block == false)
 					{
 						mana -= 10;
-						damage = 5;
+						damage = 30;
 					}
 					else { damage = 0; }
 					shotDelay.Start();
 					Shoot();
 					canshoot = false;
 					SomeKeyPressed = true;
+                    Combos.Clear();
 				}
-				if (specialShotRight[0] == Combos[0] && specialShotRight[1] == Combos[1] && specialShotRight[2] == Combos[2] && canshoot == true && canAttack == true)
+				else if (specialShotRight[0] == Combos[0] && specialShotRight[1] == Combos[1] && specialShotRight[2] == Combos[2] && canshoot == true && canAttack == true)
 				{
 					if (enemy.block == true)
 					{
@@ -230,36 +253,39 @@ namespace Tempt_Fate
 					if (mana > 0 && enemy.block == false)
 					{
 						mana -= 10;
-						damage = 5;
+						damage = 30;
 					}
 					else { damage = 0; }
 					shotDelay.Start();
 					Shoot();
 					canshoot = false;
 					SomeKeyPressed = true;
+                    Combos.Clear();
 				}
-				//block
-				if (button == Buttons.RightTrigger)
+			}
+            //block
+            if (gamePadButtons.newRightTrigger && Jumped == false)
+			{
+				block = true;
+				canAttack = false;
+				canWalk = false;
+				SomeKeyPressed = true;
+				if (facingRight == true)
 				{
-					block = true;
-					canAttack = false;
-					canWalk = false;
-					SomeKeyPressed = true;
-					if (facingRight == true)
-					{
-						animation.SetTexture(BlockRight, 0);
-						animation.movetexture();
-					}
+					animation.SetTexture(BlockRight, 0,false);
+					animation.movetexture();
 				}
 				else
 				{
-					block = false;
-					canAttack = true;
-					canWalk = true;
+					animation.SetTexture(BlockLeft, 0,false);
+					animation.movetexture();
 				}
 			}
-			catch (ArgumentOutOfRangeException ex)
+			else
 			{
+				block = false;
+				canAttack = true;
+				canWalk = true;
 			}
 			//Update Bullets
 			for (int i = 0; i < Math.Abs(shootlist.Count); i++)

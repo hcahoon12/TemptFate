@@ -109,7 +109,7 @@ namespace Tempt_Fate
 					selectScreen.Bool = true;
 				}
 			}
-			//select screen lets player choose between three options
+			//select screen lets player choose between four options , play , settings, tutorial , quit
 			else if (selectScreen.Bool == true)
 			{
 				if (button == Buttons.DPadDown && Play == true)
@@ -324,7 +324,7 @@ namespace Tempt_Fate
 				}
 			}
 		}
-		public virtual void Draw(SpriteBatch spritebatch)
+		public void Draw(SpriteBatch spritebatch)
 		{
 			if (FirstLevel.Bool == true)
 			{

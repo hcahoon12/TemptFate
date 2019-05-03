@@ -1,0 +1,11 @@
+How to play Tempt Fate
+- Download the latest version of monogame
+- Download visual studio 2017
+- Go to files / Tempt Fate / TemptFate.sln
+- Press run
+
+To check keyboard inputs go to GamePadButtons class,
+keys only added for testing but preferred to xbox controllers.
+For instance the space bar in start and "c" is "A"
+
+To check save files go to Tempt Fate / Files
